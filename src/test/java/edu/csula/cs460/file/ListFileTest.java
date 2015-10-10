@@ -3,11 +3,12 @@ package edu.csula.cs460.file;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 import com.google.common.collect.Lists;
 
 public class ListFileTest {
-    @Test
+    @Ignore
     public void testList1() {
         ListFile listFile = new ListFile("exercise-1/list-1.txt");
 
@@ -24,7 +25,7 @@ public class ListFileTest {
         );
     }
 
-    @Test
+    @Ignore
     public void testList2() {
         ListFile listFile = new ListFile("exercise-1/list-2.txt");
 

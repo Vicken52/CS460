@@ -3,9 +3,10 @@ package edu.csula.cs460.file;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class MatrixFileTest {
-    @Test
+    @Ignore
     public void test2DArray1() {
         MatrixFile matrixFile = new MatrixFile("exercise-1/2d-array-1.txt");
 
@@ -34,7 +35,7 @@ public class MatrixFileTest {
         );
     }
 
-    @Test
+    @Ignore
     public void test2DArray2() {
         MatrixFile matrixFile = new MatrixFile("exercise-1/2d-array-2.txt");
 
