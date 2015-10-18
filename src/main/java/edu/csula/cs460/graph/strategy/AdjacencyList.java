@@ -101,13 +101,11 @@ public class AdjacencyList implements Representation {
             {
               edges.remove(j);
             }
-
           }
           updateMap();
           return true;
 
         }
-
       }
       return false;
     }
