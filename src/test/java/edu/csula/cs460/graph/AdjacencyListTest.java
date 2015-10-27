@@ -19,8 +19,8 @@ public class AdjacencyListTest {
     @Before
     public void setup() {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file1 = new File(classLoader.getResource("homework-1/graph-1").getFile());
-        File file2 = new File(classLoader.getResource("homework-1/graph-2").getFile());
+        File file1 = new File(classLoader.getResource("homework-1/graph-1.txt").getFile());
+        File file2 = new File(classLoader.getResource("homework-1/graph-2.txt").getFile());
 
         graph1 = new Graph(
             Representation.of(
@@ -71,7 +71,7 @@ public class AdjacencyListTest {
         );
         assertEquals(
             "Test graph 1 neighbors for node 4",
-            Lists.newArrayList(new Node(5)),
+            Lists.newArrayList(new Node(5), new Node(7)),
             graph1.neighbors(new Node(4))
         );
         assertEquals(
@@ -84,11 +84,11 @@ public class AdjacencyListTest {
     @Test
     public void testGraph1AddNode() {
         assertFalse(
-            "Test graph 1 adding exiting node, should return false",
+            "Test graph 1 adding existing node, should return false",
             graph1.addNode(new Node(1))
         );
         assertFalse(
-            "Test graph 1 adding exiting node, should return false",
+            "Test graph 1 adding existing node, should return false",
             graph1.addNode(new Node(6))
         );
 
@@ -101,8 +101,8 @@ public class AdjacencyListTest {
     @Test
     public void testGraph1RemoveNode() {
         assertTrue(
-            "Test graph 1 remove exiting node, should return true",
-            graph1.removeNode(new Node(1))
+            "Test graph 1 remove existing node, should return true",
+            graph1.removeNode(new Node(6))
         );
 
         // test state of graph

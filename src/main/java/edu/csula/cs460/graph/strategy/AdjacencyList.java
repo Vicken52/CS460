@@ -5,42 +5,135 @@ import edu.csula.cs460.graph.Edge;
 
 import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.LinkedHashMap;
+
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 public class AdjacencyList implements Representation {
-    private Map<Node, List<Node>> adjacencyList;
+    private Map<Node, List<Node>> adjacencyList = new LinkedHashMap<Node, List<Node>>();
+    private List<Node> nodes = new ArrayList<Node>();
+    private List<Edge> edges = new ArrayList<Edge>();
 
     protected AdjacencyList(File file) {
         // TODO: read file and parse it into adjacencyList variable
+
+        try
+        {
+          FileReader fr = new FileReader(file);
+          BufferedReader br = new BufferedReader(fr);
+
+          int nodeNum = Integer.parseInt(br.readLine());
+
+          for(int i = 0; i < nodeNum; i++)
+          {
+            nodes.add(new Node(i));
+          }
+
+          String[] inputArray;
+          String line = "";
+
+          while((line = br.readLine()) != null)
+          {
+            inputArray = line.split(":");
+            edges.add(new Edge(new Node(Integer.parseInt(inputArray[0])),
+                               new Node(Integer.parseInt(inputArray[1])),
+                               Integer.parseInt(inputArray[2])));
+          }
+
+          updateMap();
+        }
+        catch(IOException ex) {}
+    }
+
+    public void updateMap() {
+      for(int i = 0; i < nodes.size(); i++)
+      {
+          List<Node> nodeTmp = new ArrayList<Node>();
+
+          for(int j = 0; j < edges.size(); j++)
+          {
+            if(edges.get(j).getFrom().equals(nodes.get(i)))
+            {
+              nodeTmp.add(edges.get(j).getTo());
+            }
+          }
+
+          adjacencyList.put(nodes.get(i), nodeTmp);
+      }
     }
 
     @Override
     public boolean adjacent(Node x, Node y) {
-        return false;
+      return adjacencyList.get(x).contains(y);
     }
 
     @Override
     public List<Node> neighbors(Node x) {
-        return null;
+        return adjacencyList.get(x);
     }
 
     @Override
     public boolean addNode(Node x) {
-        return false;
+      for(int i = 0; i < nodes.size(); i++)
+      {
+        if(nodes.get(i).equals(x))
+        {
+          return false;
+        }
+      }
+      nodes.add(x);
+      return true;
     }
 
     @Override
     public boolean removeNode(Node x) {
-        return false;
+      for(int i = 0; i < nodes.size(); i++) {
+
+        if(nodes.get(i).equals(x))
+        {
+          for(int j = 0; j < edges.size(); j++) {
+
+            if(edges.get(j).getTo().equals(x))
+            {
+              edges.remove(j);
+            }
+          }
+          updateMap();
+          return true;
+
+        }
+      }
+      return false;
     }
 
     @Override
     public boolean addEdge(Edge x) {
-        return false;
+      for(int i = 0; i < edges.size(); i++)
+      {
+        if(edges.get(i).equals(x))
+        {
+          return false;
+        }
+      }
+      edges.add(x);
+      updateMap();
+      return true;
     }
 
     @Override
     public boolean removeEdge(Edge x) {
-        return false;
+      for(int j = 0; j < edges.size(); j++) {
+        if(edges.get(j).equals(x))
+        {
+          edges.remove(j);
+          updateMap();
+          return true;
+        }
+      }
+      return false;
     }
 }
