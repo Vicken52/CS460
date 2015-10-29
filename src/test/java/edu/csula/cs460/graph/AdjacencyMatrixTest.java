@@ -18,8 +18,8 @@ public class AdjacencyMatrixTest {
     @Before
     public void setup() {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file1 = new File(classLoader.getResource("homework-1/graph-1").getFile());
-        File file2 = new File(classLoader.getResource("homework-1/graph-2").getFile());
+        File file1 = new File(classLoader.getResource("homework-1/graph-1.txt").getFile());
+        File file2 = new File(classLoader.getResource("homework-1/graph-2.txt").getFile());
 
         graph1 = new Graph(
             Representation.of(
@@ -71,7 +71,7 @@ public class AdjacencyMatrixTest {
         );
         assertEquals(
             "Test graph 1 neighbors for node 4",
-            Lists.newArrayList(new Node(5),  new Node(7)),
+            Lists.newArrayList(new Node(5), new Node(7)),
             graph1.neighbors(new Node(4))
         );
         assertEquals(
