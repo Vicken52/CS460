@@ -84,11 +84,11 @@ public class AdjacencyListTest {
     @Test
     public void testGraph1AddNode() {
         assertFalse(
-            "Test graph 1 adding exiting node, should return false",
+            "Test graph 1 adding existing node, should return false",
             graph1.addNode(new Node(1))
         );
         assertFalse(
-            "Test graph 1 adding exiting node, should return false",
+            "Test graph 1 adding existing node, should return false",
             graph1.addNode(new Node(6))
         );
 
@@ -101,7 +101,7 @@ public class AdjacencyListTest {
     @Test
     public void testGraph1RemoveNode() {
         assertTrue(
-            "Test graph 1 remove exiting node, should return true",
+            "Test graph 1 remove existing node, should return true",
             graph1.removeNode(new Node(6))
         );
 
