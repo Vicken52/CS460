@@ -12,11 +12,12 @@ import java.util.LinkedHashMap;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.stream.Collectors;
 
 public class AdjacencyList implements Representation {
-    private Map<Node, List<Node>> adjacencyList = new LinkedHashMap<Node, List<Node>>();
-    private List<Node> nodes = new ArrayList<Node>();
-    private List<Edge> edges = new ArrayList<Edge>();
+    private Map<Node, List<Node>> adjacencyList = new LinkedHashMap<>();
+    private List<Node> nodes = new ArrayList<>();
+    private List<Edge> edges = new ArrayList<>();
 
     protected AdjacencyList(File file) {
         // TODO: read file and parse it into adjacencyList variable
@@ -34,7 +35,7 @@ public class AdjacencyList implements Representation {
           }
 
           String[] inputArray;
-          String line = "";
+          String line;
 
           while((line = br.readLine()) != null)
           {
@@ -46,24 +47,15 @@ public class AdjacencyList implements Representation {
 
           updateMap();
         }
-        catch(IOException ex) {}
+        catch(IOException ignored) {}
     }
 
     public void updateMap() {
-      for(int i = 0; i < nodes.size(); i++)
-      {
-          List<Node> nodeTmp = new ArrayList<Node>();
+        for (Node node : nodes) {
+            List<Node> nodeTmp = edges.stream().filter(edge -> edge.getFrom().equals(node)).map(Edge::getTo).collect(Collectors.toList());
 
-          for(int j = 0; j < edges.size(); j++)
-          {
-            if(edges.get(j).getFrom().equals(nodes.get(i)))
-            {
-              nodeTmp.add(edges.get(j).getTo());
-            }
-          }
-
-          adjacencyList.put(nodes.get(i), nodeTmp);
-      }
+            adjacencyList.put(node, nodeTmp);
+        }
     }
 
     @Override
@@ -78,47 +70,41 @@ public class AdjacencyList implements Representation {
 
     @Override
     public boolean addNode(Node x) {
-      for(int i = 0; i < nodes.size(); i++)
-      {
-        if(nodes.get(i).equals(x))
-        {
-          return false;
+        for (Node node : nodes) {
+            if (node.equals(x)) {
+                return false;
+            }
         }
-      }
       nodes.add(x);
       return true;
     }
 
     @Override
     public boolean removeNode(Node x) {
-      for(int i = 0; i < nodes.size(); i++) {
+        for (Node node : nodes) {
 
-        if(nodes.get(i).equals(x))
-        {
-          for(int j = 0; j < edges.size(); j++) {
+            if (node.equals(x)) {
+                for (int j = 0; j < edges.size(); j++) {
 
-            if(edges.get(j).getTo().equals(x))
-            {
-              edges.remove(j);
+                    if (edges.get(j).getTo().equals(x)) {
+                        edges.remove(j);
+                    }
+                }
+                updateMap();
+                return true;
+
             }
-          }
-          updateMap();
-          return true;
-
         }
-      }
       return false;
     }
 
     @Override
     public boolean addEdge(Edge x) {
-      for(int i = 0; i < edges.size(); i++)
-      {
-        if(edges.get(i).equals(x))
-        {
-          return false;
+        for (Edge edge : edges) {
+            if (edge.equals(x)) {
+                return false;
+            }
         }
-      }
       edges.add(x);
       updateMap();
       return true;

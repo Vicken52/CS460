@@ -35,7 +35,7 @@ public class AdjacencyMatrix implements Representation {
           }
 
           String[] inputArray;
-          String line = "";
+          String line;
 
           while((line = br.readLine()) != null)
           {
@@ -43,7 +43,7 @@ public class AdjacencyMatrix implements Representation {
             adjacencyMatrix[Integer.parseInt(inputArray[0])][Integer.parseInt(inputArray[1])] = Integer.parseInt(inputArray[2]);
           }
         }
-        catch(IOException ex) {}
+        catch(IOException ignored) {}
     }
 
     public void updateMatrix(int test) {
@@ -72,7 +72,7 @@ public class AdjacencyMatrix implements Representation {
 
       int[][] adjacencyTmp = new int[nodeNum][nodeNum];
       testT = false;
-      boolean testJ = false;
+      boolean testJ;
 
       for(int i = 0; i < adjacencyMatrix.length; i++)
       {
@@ -133,19 +133,12 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public boolean adjacent(Node x, Node y) {
-      if(adjacencyMatrix[x.getId()][y.getId()] > 0)
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return adjacencyMatrix[x.getId()][y.getId()] > 0;
     }
 
     @Override
     public List<Node> neighbors(Node x) {
-      List<Node> neighbors = new ArrayList<Node>();
+      List<Node> neighbors = new ArrayList<>();
       int indexX = 0;
       for(int i = 0; i < nodes.length; i++)
       {
@@ -168,10 +161,8 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public boolean addNode(Node x) {
-      for(int i = 0; i < nodes.length; i++)
-      {
-        if(nodes[i].equals(x))
-        {
+      for (Node node : nodes) {
+        if (node.equals(x)) {
           return false;
         }
       }
