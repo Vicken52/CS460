@@ -46,7 +46,7 @@ public class AdjacencyMatrix implements Representation {
         catch(IOException ignored) {}
     }
 
-    public void updateMatrix(int test) {
+    private void updateMatrix(int test) {
       Node[] nodesTmp = new Node[nodeNum];
       boolean testT = false;
 
