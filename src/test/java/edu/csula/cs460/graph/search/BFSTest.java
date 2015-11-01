@@ -45,7 +45,7 @@ public class BFSTest extends TestCase {
 
         graphs[2] = new Graph(
             Representation.of(
-                Representation.STRATEGY.OBJECT_ORIENTED,
+                Representation.STRATEGY.ADJACENCY_LIST,
                 file
             )
         );
