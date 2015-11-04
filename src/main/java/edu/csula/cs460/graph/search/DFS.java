@@ -10,7 +10,7 @@ import java.util.List;
 public class DFS implements SearchStrategy {
     public List<Edge> search(Graph graph, Node source, Node dist) {
 
-        List<Edge> result = null;
+        List<Edge> result;
         for(Node node : graph.neighbors(source))
         {
             if(node.getId() == dist.getId())
@@ -31,12 +31,6 @@ public class DFS implements SearchStrategy {
                     }
                     return result;
                 }
-            }
-        }
-
-        if(result != null) {
-            if(graph.adjacent(source, result.get(0).getFrom())) {
-                result.add(0, new Edge(source, result.get(0).getFrom(), graph.distance(source, result.get(0).getFrom())));
             }
         }
 
