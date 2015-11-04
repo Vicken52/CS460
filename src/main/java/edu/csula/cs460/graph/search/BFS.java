@@ -40,11 +40,13 @@ public class BFS implements SearchStrategy
                             Edge edge = (Edge) iterator.previous();
                             if (result.get(0).getTo().getId() == edge.getTo().getId())
                             {
+                                //This sets the front edge.
                                 result.set(0, edge);
                                 tempN = edge.getFrom();
                             }
                             else if (edge.getTo().getId() == tempN.getId())
                             {
+                                //This adds to the front.
                                 result.add(0, edge);
                                 tempN = edge.getFrom();
                             }
