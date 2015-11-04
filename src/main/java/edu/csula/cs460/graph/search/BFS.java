@@ -6,49 +6,54 @@ import edu.csula.cs460.graph.Node;
 
 import java.util.*;
 
-public class BFS implements SearchStrategy {
-    public List<Edge> search(Graph graph, Node source, Node dist) {
+public class BFS implements SearchStrategy
+{
+    public List<Edge> search(Graph graph, Node source, Node dist)
+    {
 
-        List<Edge> result = null;
+        List<Edge> edges = new ArrayList<>();
         Queue<Node> queue = new LinkedList<>();
 
         queue.add(source);
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty())
+        {
             Node n = queue.poll();
 
-            for(Node node : graph.neighbors(n))
+            for (Node node : graph.neighbors(n))
             {
-                if(node.getId() != dist.getId())
+                edges.add(new Edge(n, node, graph.distance(n, node)));
+                if (node.getId() != dist.getId())
                 {
                     queue.add(node);
                 }
                 else
                 {
-                    if(result != null)
+                    if (node.getId() == dist.getId())
                     {
-                        result.add(0, new Edge(n, node, graph.distance(n, node)));
-                    }
-                    else
-                    {
-                        result = new ArrayList<>();
+                        Node tempN = n;
+                        List<Edge> result = new ArrayList<>();
                         result.add(new Edge(n, node, graph.distance(n, node)));
-                    }
 
-                    if(n == source)
-                    {
+                        for (ListIterator iterator = edges.listIterator(edges.size()); iterator.hasPrevious();)
+                        {
+                            Edge edge = (Edge) iterator.previous();
+                            if (result.get(0).getTo().getId() == edge.getTo().getId())
+                            {
+                                result.set(0, edge);
+                                tempN = edge.getFrom();
+                            }
+                            else if (edge.getTo().getId() == tempN.getId())
+                            {
+                                result.add(0, edge);
+                                tempN = edge.getFrom();
+                            }
+                        }
                         return result;
-                    }
-                    else
-                    {
-                        dist = node;
-                        queue.clear();
-                        queue.add(source);
                     }
                 }
             }
         }
-
         return null;
     }
 }
