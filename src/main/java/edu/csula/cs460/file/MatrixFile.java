@@ -1,54 +1,72 @@
 package edu.csula.cs460.file;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
-public class MatrixFile {
-    private final int[][] matrix;
+public class MatrixFile
+{
+    private int[][] matrix;
 
-    public MatrixFile(String filepath) {
-        // since we don't know how many rows there is going to be, we will
-        // create a list to hold dynamic arrays instead
-        List<int[]> dynamicMatrix = Lists.newArrayList();
+    public MatrixFile(String filepath)
+    {
+        // TODO: read file from filepath ('exercise-1/2d-array-1.txt' for
+        // example) and parse line by line to fill out matrix
 
-        try {
-            // use Guava to read file from resources folder
-            String content = Resources.toString(
-                Resources.getResource(filepath),
-                Charsets.UTF_8
-            );
+        try
+        {
+          File file = new File(filepath);
+          FileReader fr = new FileReader(file);
+          BufferedReader br = new BufferedReader(fr);
 
-            Arrays.stream(content.split("\n"))
-                .forEach(line -> {
-                    dynamicMatrix.add(
-                        Arrays.stream(line.split(" "))
-                            .mapToInt(Integer::parseInt)
-                            .toArray()
-                    );
-                });
-        } catch (IOException e) {
-            // in case of error, always log error!
-            System.err.println("MatrixFile has trouble reading file");
-            e.printStackTrace();
+          String line;
+          String numbersLine = "";
+          int rowNum = 0;
+          int colNum = 0;
+
+          while((line = br.readLine()) != null)
+          {
+            line = line.replace(" ", "");
+            numbersLine += line;
+
+            if(colNum < line.length())
+            {
+              colNum = line.length();
+            }
+            rowNum++;
+          }
+
+          matrix = new int[rowNum][colNum];
+
+          for(int i = 0; i < numbersLine.length(); i++)
+          {
+            matrix[i/rowNum][i % colNum] = Character.getNumericValue(numbersLine.charAt(i));
+          }
+
+          br.close();
+          fr.close();
         }
-
-        matrix = dynamicMatrix.stream().toArray(int[][]::new);
+        catch(IOException ignored) {}
     }
 
-    public int getValue(int row, int col) {
+    public int getValue(int row, int col)
+    {
+        // TODO: get value of a specific row and column (starting index is 0)
         return matrix[row][col];
     }
 
-    public int getSum() {
-        return Arrays.stream(matrix)
-            .mapToInt(row -> Arrays.stream(row).sum())
-            .sum();
+    public int getSum()
+    {
+        // TODO: return the sum of all numbers in matrix
+        int sum = 0;
+
+        for (int[] aMatrix : matrix) {
+            for (int colNumber = 0; colNumber < matrix.length; colNumber++) {
+                sum += aMatrix[colNumber];
+            }
+        }
+
+        return sum;
     }
 }

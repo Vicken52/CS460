@@ -3,12 +3,12 @@ package edu.csula.cs460.file;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.Before;
 
 public class MatrixFileTest {
-    @Ignore
+    @Test
     public void test2DArray1() {
-        MatrixFile matrixFile = new MatrixFile("exercise-1/2d-array-1.txt");
+        MatrixFile matrixFile = new MatrixFile("src/main/resources/exercise-1/2d-array-1.txt");
 
         assertEquals(
             "Text case 1 - `test row 0 col 0`",
@@ -35,9 +35,9 @@ public class MatrixFileTest {
         );
     }
 
-    @Ignore
+    @Test
     public void test2DArray2() {
-        MatrixFile matrixFile = new MatrixFile("exercise-1/2d-array-2.txt");
+        MatrixFile matrixFile = new MatrixFile("src/main/resources/exercise-1/2d-array-2.txt");
 
         assertEquals(
             "Text case 5 - `test row 0 col 0`",
