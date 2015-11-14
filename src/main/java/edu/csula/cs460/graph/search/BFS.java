@@ -6,44 +6,56 @@ import edu.csula.cs460.graph.Node;
 
 import java.util.*;
 
-public class BFS implements SearchStrategy {
-    public List<Edge> search(Graph graph, Node source, Node dist) {
-        List<Edge> result = new ArrayList<>();
-        Map<Node, Node> parents = new HashMap<>();
-        Map<Node, Integer> distances = new HashMap<>();
+public class BFS implements SearchStrategy
+{
+    public List<Edge> search(Graph graph, Node source, Node dist)
+    {
 
+        List<Edge> edges = new ArrayList<>();
         Queue<Node> queue = new LinkedList<>();
 
-        distances.put(source, 0);
-        parents.put(source, null);
         queue.add(source);
 
-        while (!queue.isEmpty()) {
-            Node u = queue.poll();
+        while (!queue.isEmpty())
+        {
+            Node n = queue.poll();
 
-            // for all the neighbors (possible next moves)
-            graph.neighbors(u).stream().filter(tile -> !distances.containsKey(tile)).forEach(tile -> {
-                distances.put(tile, distances.get(u) + 1);
-                parents.put(tile, u);
-                queue.add(tile);
-            });
-        }
+            for (Node node : graph.neighbors(n))
+            {
+                edges.add(new Edge(n, node, graph.distance(n, node)));
+                if (node.getId() != dist.getId())
+                {
+                    queue.add(node);
+                }
+                else
+                {
+                    if (node.getId() == dist.getId())
+                    {
+                        Node tempN = n;
+                        List<Edge> result = new ArrayList<>();
+                        result.add(new Edge(n, node, graph.distance(n, node)));
 
-        Node currentNode = dist;
-
-        // build the list of moves by recursively calling parent
-        while (!currentNode.equals(source)) {
-            Node parent = parents.get(currentNode);
-
-            if (parent != null) {
-                result.add(new Edge(parent, currentNode, graph.distance(parent, currentNode)));
+                        for (ListIterator iterator = edges.listIterator(edges.size()); iterator.hasPrevious();)
+                        {
+                            Edge edge = (Edge) iterator.previous();
+                            if (result.get(0).getTo().getId() == edge.getTo().getId())
+                            {
+                                //This sets the front edge.
+                                result.set(0, edge);
+                                tempN = edge.getFrom();
+                            }
+                            else if (edge.getTo().getId() == tempN.getId())
+                            {
+                                //This adds to the front.
+                                result.add(0, edge);
+                                tempN = edge.getFrom();
+                            }
+                        }
+                        return result;
+                    }
+                }
             }
-
-            currentNode = parents.get(currentNode);
         }
-
-        Collections.reverse(result);
-
-        return result;
+        return null;
     }
 }
