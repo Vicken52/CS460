@@ -50,12 +50,22 @@ public class AdjacencyList implements Representation {
         catch(IOException ignored) {}
     }
 
+    protected AdjacencyList() {
+
+    }
+
     private void updateMap() {
         for (Node node : nodes) {
             List<Node> nodeTmp = edges.stream().filter(edge -> edge.getFrom().equals(node)).map(Edge::getTo).collect(Collectors.toList());
 
             adjacencyList.put(node, nodeTmp);
         }
+    }
+
+    @Override
+    public List<Node> getNodes() {
+
+        return nodes;
     }
 
     @Override

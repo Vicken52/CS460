@@ -46,6 +46,10 @@ public class AdjacencyMatrix implements Representation {
     catch(IOException ignored) {}
   }
 
+  protected AdjacencyMatrix() {
+
+  }
+
   private void updateMatrix(int test) {
     Node[] nodesTmp = new Node[nodeNum];
     boolean testT = false;
@@ -129,6 +133,18 @@ public class AdjacencyMatrix implements Representation {
     }
 
     adjacencyMatrix = adjacencyTmp;
+  }
+
+  @Override
+  public List<Node> getNodes() {
+    List<Node> nodeTmp = new ArrayList<>();
+
+    for(Node node : nodes)
+    {
+      nodeTmp.add(node);
+    }
+
+    return nodeTmp;
   }
 
   @Override

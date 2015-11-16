@@ -45,6 +45,16 @@ public class ObjectOriented implements Representation {
         catch(IOException ignored) {}
     }
 
+    protected ObjectOriented() {
+
+    }
+
+    @Override
+    public List<Node> getNodes() {
+
+        return nodes;
+    }
+
     @Override
     public boolean adjacent(Node x, Node y) {
         for (Edge edge : edges) {
