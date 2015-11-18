@@ -15,6 +15,27 @@ public class AStar implements SearchStrategy {
     private int rowLength = 0;
     private Node source;
 
+    private class NodeComparator implements Comparator<Node>
+    {
+        public int compare(Node x, Node y)
+        {
+            double xValue = Math.sqrt(Math.pow((x.getId() % rowLength) - (source.getId() % rowLength), 2.0) +
+                    Math.pow((x.getId() / rowLength) - (source.getId() / rowLength), 2.0));
+            double yValue = Math.sqrt(Math.pow((y.getId() % rowLength) - (source.getId() % rowLength), 2.0) +
+                    Math.pow((y.getId() / rowLength) - (source.getId() / rowLength), 2.0));
+
+            if(xValue > yValue) {
+                return 1;
+            }
+            else if(xValue < yValue) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
+        }
+    }
+
     /*
     Distance:
         0 = North
@@ -25,7 +46,7 @@ public class AStar implements SearchStrategy {
 
     @Override
     public List<Edge> search(Graph graph, Node source, Node dist) {
-        PriorityQueue<Node> queue = new PriorityQueue<>(new NodeComparator());
+        Queue<Node> queue = new PriorityQueue<>(new NodeComparator());
         List<Node> closed = new ArrayList<>();
         List<Edge> result = new ArrayList<>();
         queue.add(source);
@@ -76,27 +97,6 @@ public class AStar implements SearchStrategy {
         return result;
     }
 
-    private class NodeComparator implements Comparator<Node>
-    {
-        public int compare(Node x, Node y)
-        {
-            double xValue = Math.sqrt(Math.pow((x.getId() % rowLength) - (source.getId() % rowLength), 2.0) +
-                    Math.pow((x.getId() / rowLength) - (source.getId() / rowLength), 2.0));
-            double yValue = Math.sqrt(Math.pow((y.getId() % rowLength) - (source.getId() % rowLength), 2.0) +
-                    Math.pow((y.getId() / rowLength) - (source.getId() / rowLength), 2.0));
-
-            if(xValue > yValue) {
-                return 1;
-            }
-            else if(xValue < yValue) {
-                return -1;
-            }
-            else {
-                return 0;
-            }
-        }
-    }
-
     /**
      * A lower level implementation to get path from key point to key point
      */
@@ -105,85 +105,83 @@ public class AStar implements SearchStrategy {
                             Representation.STRATEGY.OBJECT_ORIENTED));
         Node dist = null;
         String result = "";
-        int colNum = 0;
 
-//        try
-//        {
-//            Map<Integer, Node> map = new HashMap<>();
-//            FileReader fr = new FileReader(file);
-//            BufferedReader br = new BufferedReader(fr);
-//
-//            String line;
-//
-//            while((line = br.readLine()) != null)
-//            {
-//
-//                if(line.charAt(0) != '+')
-//                {
-//                    int rowNum = 0;
-//                    line = line.substring(1);
-//                    rowLength = (int) Math.floor(line.length()/2);
-//
-//                    while(line.length() > 1)
-//                    {
-//                        Node tempN = new Node(rowLength*colNum + rowNum);
-//
-//                        if(line.startsWith("@1"))
-//                        {
-//                            source = tempN;
-//                        }
-//                        else if(line.startsWith("@"))
-//                        {
-//                            dist = tempN;
-//                        }
-//
-//                        if(!line.startsWith("##"))
-//                        {
-//                            map.put(rowLength*colNum + rowNum, tempN);
-//                            graph.addNode(tempN);
-//
-//                            if(map.containsKey(rowLength*colNum + rowNum - 1))
-//                            {
-//                                graph.addEdge(new Edge(map.get(rowLength*colNum + rowNum - 1), tempN, 3));
-//                                graph.addEdge(new Edge(tempN, map.get(rowLength*colNum + rowNum - 1), 1));
-//                            }
-//                            else if(map.containsKey(rowLength*(colNum-1) + rowNum))
-//                            {
-//                                graph.addEdge(new Edge(map.get(rowLength*(colNum-1) + rowNum), tempN, 0));
-//                                graph.addEdge(new Edge(tempN, map.get(rowLength*(colNum-1) + rowNum), 2));
-//                            }
-//                        }
-//
-//                        rowNum++;
-//                        line = line.substring(2);
-//                    }
-//                }
-//
-//                colNum++;
-//            }
-//
-//            br.close();
-//            fr.close();
-//        }
-//        catch(IOException ignored) {}
+        try
+        {
+            Map<Integer, Node> map = new HashMap<>();
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
 
-//        List<Edge> route = search(graph, source, dist);
-//
-//        if(route.size() > 0)
-//        {
-//            for (Edge edge : route)
-//            {
-//                if (edge.getValue() == 0) {
-//                    result += "N";
-//                } else if (edge.getValue() == 1) {
-//                    result += "E";
-//                } else if (edge.getValue() == 2) {
-//                    result += "S";
-//                } else {
-//                    result += "W";
-//                }
-//            }
-//        }
+            String line;
+
+            line = br.readLine();
+            rowLength = (int) Math.floor((line.length()-2)/2);
+            int colNum = 0;
+
+            while((line = br.readLine()) != null)
+            {
+                int rowNum = 0;
+
+                while(line.length() > 1)
+                {
+                    if(!line.startsWith("##"))
+                    {
+                        Node tempN = new Node(rowLength*colNum + rowNum);
+                        map.put(rowLength*colNum + rowNum, tempN);
+                        graph.addNode(tempN);
+                        System.out.println(tempN);
+
+                        if(map.containsKey(rowLength*colNum + rowNum - 1))
+                        {
+                            graph.addEdge(new Edge(map.get(rowLength*colNum + rowNum - 1), tempN, 3));
+                            graph.addEdge(new Edge(tempN, map.get(rowLength*colNum + rowNum - 1), 1));
+                        }
+
+                        if(map.containsKey(rowLength*(colNum-1) + rowNum))
+                        {
+                            graph.addEdge(new Edge(map.get(rowLength*(colNum-1) + rowNum), tempN, 0));
+                            graph.addEdge(new Edge(tempN, map.get(rowLength*(colNum-1) + rowNum), 2));
+                        }
+
+                        if(line.startsWith("@1"))
+                        {
+                            source = tempN;
+                        }
+                        else if(line.startsWith("@"))
+                        {
+                            dist = tempN;
+                        }
+                    }
+
+                    rowNum++;
+                    line = line.substring(2);
+                }
+
+                colNum++;
+            }
+
+            br.close();
+            fr.close();
+        }
+        catch(IOException ignored) {}
+
+        List<Edge> route = search(graph, source, dist);
+
+        if(route.size() > 0)
+        {
+            for (Edge edge : route)
+            {
+                if (edge.getValue() == 0) {
+                    result += "N";
+                } else if (edge.getValue() == 1) {
+                    result += "E";
+                } else if (edge.getValue() == 2) {
+                    result += "S";
+                } else {
+                    result += "W";
+                }
+            }
+        }
 
         return result;
     }
