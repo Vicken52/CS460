@@ -56,7 +56,7 @@ public class AStar implements SearchStrategy {
         while(!queue.isEmpty())
         {
             Node n = queue.poll();
-            System.out.print(n);
+            //System.out.print(n);
 
             if(n.getId() != dist.getId() && !visited.contains(n))
             {
@@ -66,10 +66,10 @@ public class AStar implements SearchStrategy {
                 Node tmp = queue.poll();
                 result.add(new Edge(n, tmp, graph.distance(n, tmp)));
 
-                queue.clear();
+                //queue.clear();
                 queue.add(tmp);
             }
-            else
+            else if(n.getId() == dist.getId())
             {
                 break;
             }
@@ -150,7 +150,7 @@ public class AStar implements SearchStrategy {
             while((line = br.readLine()) != null)
             {
                 line = line.substring(1);
-                System.out.println(line);
+                //System.out.println(line);
                 int colNum = 0;
 
                 while(line.length() > 1)
