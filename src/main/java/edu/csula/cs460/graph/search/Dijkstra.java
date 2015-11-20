@@ -38,8 +38,6 @@ public class Dijkstra implements SearchStrategy {
         previous.put(source, null);
         queue.add(source);
 
-        //System.out.println(source.toString() + "Source node");
-
         while(!queue.isEmpty())
         {
             Node n = queue.poll();
@@ -48,16 +46,13 @@ public class Dijkstra implements SearchStrategy {
                 visited.add(n);
 
                 int tmp;
-                //System.out.println(n.toString() + "Current node");
                 for(Node node : graph.neighbors(n))
                 {
                     tmp = graph.distance(n, node) + distance.get(n);
-                    //System.out.println(node.toString() + "CURRENT NEIGHBOR");
                     if(distance.get(node) == null || tmp < distance.get(node))
                     {
                         distance.put(node, tmp);
                         previous.put(node, n);
-                        //System.out.println(previous.get(node) + "CURRENT NEIGHBOR PARENT");
                     }
 
                     queue.add(node);
