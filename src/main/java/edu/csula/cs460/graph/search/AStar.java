@@ -46,7 +46,7 @@ public class AStar implements SearchStrategy {
                 Math.pow((double) (x.getId() / rowLength) - (double) (y.getId() / rowLength), 2.0));
     }
 
-    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n, Node source)
+    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n)
     {
         List<Edge> result = new ArrayList<>();
 
@@ -55,8 +55,6 @@ public class AStar implements SearchStrategy {
             result.add(0, new Edge(from.get(n), n, graph.distance(from.get(n), n)));
             n = from.get(n);
         }
-
-        result.add(0, new Edge(source, result.get(0).getFrom(), graph.distance(source, result.get(0).getFrom())));
 
         return result;
     }
@@ -87,23 +85,26 @@ public class AStar implements SearchStrategy {
 
             if(n.getId() == dist.getId())
             {
-                return reconstruct_path(graph, from, n, source);
+                return reconstruct_path(graph, from, n);
             }
 
             graph.neighbors(n).stream().filter(node -> !visited.contains(node)).forEach(node -> {
 
                 if (!queue.contains(node))
                 {
-                    queue.add(node);
-
                     double tmp = g_score.getOrDefault(n, Double.POSITIVE_INFINITY) + (double) graph.distance(n, node);
 
-                    if (tmp >= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
+                    if(!queue.contains(node))
+                    {
+                        queue.add(node);
+                    }
+
+                    if (tmp <= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
                     {
                         //System.out.println(n +  " " + node);
                         from.put(node, n);
-                        g_score.replace(node, tmp);
-                        f_score.replace(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
+                        g_score.put(node, tmp);
+                        f_score.put(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
                     }
                 }
             });
@@ -131,7 +132,7 @@ public class AStar implements SearchStrategy {
             String line;
 
             line = br.readLine();
-            rowLength = (int) Math.floor((line.length() - 2.0) / 2.0);
+            rowLength = (int) Math.floor((line.length()) / 2.0);
             int rowNum = 0;
 
             while((line = br.readLine()) != null)
