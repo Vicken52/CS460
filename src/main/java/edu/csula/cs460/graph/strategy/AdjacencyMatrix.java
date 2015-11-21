@@ -4,6 +4,7 @@ import edu.csula.cs460.graph.Edge;
 import edu.csula.cs460.graph.Node;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -47,7 +48,8 @@ public class AdjacencyMatrix implements Representation {
   }
 
   protected AdjacencyMatrix() {
-
+    nodes = new Node[nodeNum];
+    adjacencyMatrix = new int[nodeNum][nodeNum];
   }
 
   private void updateMatrix(int test) {
@@ -139,10 +141,7 @@ public class AdjacencyMatrix implements Representation {
   public List<Node> getNodes() {
     List<Node> nodeTmp = new ArrayList<>();
 
-    for(Node node : nodes)
-    {
-      nodeTmp.add(node);
-    }
+    Collections.addAll(nodeTmp, nodes);
 
     return nodeTmp;
   }
@@ -177,9 +176,13 @@ public class AdjacencyMatrix implements Representation {
 
   @Override
   public boolean addNode(Node x) {
-    for (Node node : nodes) {
-      if (node.equals(x)) {
-        return false;
+
+    if(nodes.length > 0)
+    {
+      for (Node node : nodes) {
+        if (node.equals(x)) {
+          return false;
+        }
       }
     }
 

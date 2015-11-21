@@ -1,5 +1,6 @@
 package edu.csula.cs460.graph.search;
 
+import com.google.common.base.Stopwatch;
 import edu.csula.cs460.graph.Edge;
 import edu.csula.cs460.graph.Graph;
 import edu.csula.cs460.graph.Node;
@@ -18,7 +19,7 @@ public class AStar implements SearchStrategy {
         @Override
         public int compare(Node x, Node y)
         {
-            return (int) ((f_score.getOrDefault(x, Double.POSITIVE_INFINITY) - f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) * 1000.0);
+            return f_score.getOrDefault(x, Double.POSITIVE_INFINITY).compareTo(f_score.getOrDefault(y, Double.POSITIVE_INFINITY));
         }
     }
 
@@ -118,6 +119,8 @@ public class AStar implements SearchStrategy {
             Map<Integer, Node> map = new HashMap<>();
             Scanner in = new Scanner(file);
 
+            Stopwatch timer = Stopwatch.createStarted();
+
             String line;
 
             line = in.nextLine();
@@ -193,6 +196,8 @@ public class AStar implements SearchStrategy {
             }
 
             in.close();
+
+            System.out.println("Generate Graph = " + timer.stop());
         }
         catch(IOException ignored) {}
 
