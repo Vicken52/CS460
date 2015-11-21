@@ -20,10 +20,10 @@ public class AStar implements SearchStrategy {
         @Override
         public int compare(Node x, Node y)
         {
-            if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) < f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
+            if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) > f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
                 return 1;
             }
-            else if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) > f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
+            else if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) < f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
                 return -1;
             }
             else {
@@ -42,22 +42,21 @@ public class AStar implements SearchStrategy {
 
     public double value(Node x, Node y)
     {
-        double tmp = Math.sqrt(Math.pow((double) ( x.getId() % rowLength) - (double) (y.getId() % rowLength), 2.0) +
+        return Math.sqrt(Math.pow((double) ( x.getId() % rowLength) - (double) (y.getId() % rowLength), 2.0) +
                 Math.pow((double) (x.getId() / rowLength) - (double) (y.getId() / rowLength), 2.0));
-
-        System.out.println(tmp);
-        return tmp;
     }
 
-    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n)
+    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n, Node source)
     {
         List<Edge> result = new ArrayList<>();
 
         while(from.containsKey(n))
         {
-            result.add(0, new Edge(n, from.get(n), graph.distance(n, from.get(n))));
+            result.add(0, new Edge(from.get(n), n, graph.distance(from.get(n), n)));
             n = from.get(n);
         }
+
+        result.add(0, new Edge(source, result.get(0).getFrom(), graph.distance(source, result.get(0).getFrom())));
 
         return result;
     }
@@ -90,7 +89,7 @@ public class AStar implements SearchStrategy {
 
             if(n.getId() == dist.getId())
             {
-                return reconstruct_path(graph, from, n);
+                return reconstruct_path(graph, from, n, source);
             }
 
             graph.neighbors(n).stream().filter(node -> !visited.contains(node)).forEach(node -> {
@@ -103,7 +102,7 @@ public class AStar implements SearchStrategy {
 
                     if (tmp >= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
                     {
-                        System.out.println(n +  " " + node);
+                        //System.out.println(n +  " " + node);
                         from.put(node, n);
                         g_score.replace(node, tmp);
                         f_score.replace(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
@@ -134,7 +133,7 @@ public class AStar implements SearchStrategy {
             String line;
 
             line = br.readLine();
-            rowLength = (int) Math.floor((line.length()-2)/2);
+            rowLength = (int) Math.floor((line.length()-3)/2);
             int rowNum = 0;
 
             while((line = br.readLine()) != null)
@@ -143,41 +142,63 @@ public class AStar implements SearchStrategy {
                 //System.out.println(line);
                 int colNum = 0;
 
-                while(line.length() > 1)
+                if(!line.contains("#") && !line.contains("@"))
                 {
-                    if(!line.startsWith("##"))
+                    for(int i = 0; i < rowLength; i++)
                     {
-                        Node tempN = new Node(rowLength*rowNum + colNum);
-                        map.put(rowLength*rowNum + colNum, tempN);
+                        Node tempN = new Node(rowLength*rowNum + i);
+                        map.put(rowLength*rowNum + i, tempN);
                         graph.addNode(tempN);
                         //System.out.println(tempN);
 
-                        if(map.containsKey(rowLength*rowNum + colNum - 1))
+                        if(map.containsKey(rowLength*rowNum + i - 1) && i != 0)
                         {
-                            graph.addEdge(new Edge(map.get(rowLength*rowNum + colNum - 1), tempN, 3));
-                            graph.addEdge(new Edge(tempN, map.get(rowLength*rowNum + colNum - 1), 1));
+                            graph.addEdge(new Edge(map.get(rowLength*rowNum + i - 1), tempN, 1));
+                            graph.addEdge(new Edge(tempN, map.get(rowLength*rowNum + i - 1), 3));
                         }
 
-                        if(map.containsKey(rowLength*(rowNum-1) + colNum))
+                        if(map.containsKey(rowLength*(rowNum-1) + i))
                         {
-                            graph.addEdge(new Edge(map.get(rowLength*(rowNum-1) + colNum), tempN, 0));
-                            graph.addEdge(new Edge(tempN, map.get(rowLength*(rowNum-1) + colNum), 2));
+                            graph.addEdge(new Edge(map.get(rowLength*(rowNum-1) + i), tempN, 2));
+                            graph.addEdge(new Edge(tempN, map.get(rowLength*(rowNum-1) + i), 0));
                         }
 
-                        if(line.startsWith("@1"))
-                        {
-                            //System.out.println(rowNum + " " + colNum);
-                            source = tempN;
-                        }
-                        else if(line.startsWith("@"))
-                        {
-                            //System.out.println(rowNum + " " + colNum);
-                            dist = tempN;
-                        }
                     }
+                }
+                else
+                {
+                    while(line.length() > 1)
+                    {
+                        if (!line.startsWith("##"))
+                        {
+                            Node tempN = new Node(rowLength * rowNum + colNum);
+                            map.put(rowLength * rowNum + colNum, tempN);
+                            graph.addNode(tempN);
+                            //System.out.println(tempN);
 
-                    colNum++;
-                    line = line.substring(2);
+                            if (map.containsKey(rowLength * rowNum + colNum - 1) && colNum != 0) {
+                                graph.addEdge(new Edge(map.get(rowLength * rowNum + colNum - 1), tempN, 1));
+                                graph.addEdge(new Edge(tempN, map.get(rowLength * rowNum + colNum - 1), 3));
+                            }
+
+                            if (map.containsKey(rowLength * (rowNum - 1) + colNum)) {
+                                graph.addEdge(new Edge(map.get(rowLength * (rowNum - 1) + colNum), tempN, 2));
+                                graph.addEdge(new Edge(tempN, map.get(rowLength * (rowNum - 1) + colNum), 0));
+                            }
+
+                            if (line.startsWith("@1")) {
+                                //System.out.println(rowNum + " " + colNum);
+                                source = tempN;
+                            } else if (line.startsWith("@")) {
+                                //System.out.println(rowNum + " " + colNum);
+                                dist = tempN;
+                            }
+                        }
+
+                        colNum++;
+                        line = line.substring(2);
+
+                    }
                 }
 
                 rowNum++;
@@ -194,6 +215,7 @@ public class AStar implements SearchStrategy {
         {
             for (Edge edge : route)
             {
+                //System.out.println(edge);
                 if (edge.getValue() == 0) {
                     result += "N";
                 } else if (edge.getValue() == 1) {
