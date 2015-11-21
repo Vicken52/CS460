@@ -46,9 +46,9 @@ public class AStarTest {
         System.out.println("A star 1 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 1 from key point to key point",
-            "SSSSE",
-            result
+                "Test grid 1 from key point to key point",
+                "SSSSE",
+                result
         );
     }
 
@@ -61,9 +61,9 @@ public class AStarTest {
         System.out.println("A star 2 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 2 from key point to key point",
-            "SSSSEEEEEEEEEEEEENNWNWWN",
-            result
+                "Test grid 2 from key point to key point",
+                "SSSSEEEEEEEEEEEEENNWNWNW",
+                result
         );
     }
 
@@ -76,13 +76,13 @@ public class AStarTest {
         System.out.println("A star 3 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 3 from key point to key point",
-            "SSSSEESESSWWWW",
-            result
+                "Test grid 3 from key point to key point",
+                "SSSSEESESSWWWW",
+                result
         );
     }
 
-    @Test(timeout=100)
+    @Test(timeout=200)
     public void testAStar4() {
         File file = new File(classLoader.getResource("homework-3/grid-4.txt").getFile());
 
@@ -91,14 +91,14 @@ public class AStarTest {
         System.out.println("A star 4 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 4 from key point to key point",
-            "ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSESSSSSSSSSSSSSSSSSSSSSS",
-            result
+                "Test grid 4 from key point to key point",
+                "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSESE",
+                result
         );
 
     }
 
-    @Test(timeout=550)
+    @Test(timeout=650)
     public void testAStar5() {
         File file = new File(classLoader.getResource("homework-3/grid-5.txt").getFile());
 
@@ -107,9 +107,9 @@ public class AStarTest {
         System.out.println("A star 5 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 5 from key point to key point",
-            "SSSSSSSSEESESEEESSSSSESSEESESSESESEESSEESSSEEESEESSESSEEESSSESESESESESSEEESSSEESEESSEEESSSESEESSESEESSESEEESSEESSESESEESSESSEESSEESESSEESSESESEEEESSSEEESESESESESSEESSSESEESESSSESSEEESSESESESESESEESSEESESESSEEESEESSSEEESESESSSSEESSESESESESSEEESEESESSEEESSSSESESESESEEESEESSEEESSSEESSSEEEESSSSEESEESESSESSEEESSESSESSEESEEESSSEEESESESSESSEESSEEESSEESSEESSEEESSESSESSSSESEESEESEESSESSESESEEESESSSEEEEESSSSSE",
-            result
+                "Test grid 5 from key point to key point",
+                "SSSSSSSSSSEESSEESESESSEESSEESESESESESSEESESESESESESSESEESESESSESEESSEESSEESESESESESSESEESSESESEESSESEESESSESEESESESESESSEESESESESESESESESESSEESESESESESESSEESSEESESSESEESSEESESSEESESESESESESSEESESESSEESESSESEESSEESESESESSEESSESEESESSESESESESEESSEESESESESESESESESESESESESESESESSEESESSEESSEESESESESSEESESESSEESESESSEESESESESESESESESESESESESESSESEESSEESESSEESESSEESSEESESSEESESESESESESESESESESSEESEEEESSSSSE",
+                result
         );
     }
 }
