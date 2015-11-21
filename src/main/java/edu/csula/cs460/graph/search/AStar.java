@@ -70,11 +70,9 @@ public class AStar implements SearchStrategy {
         System.out.println("Dist: " + dist);
 
         Map<Node, Double> g_score = new HashMap<>();
-        //g_score.getOrDefault(source, Double.POSITIVE_INFINITY);
         g_score.put(source, 0.0);
 
         f_score = new HashMap<>();
-        //f_score.getOrDefault(source, Double.POSITIVE_INFINITY);
         f_score.put(source, g_score.get(source) + value(source, dist));
 
 
@@ -133,7 +131,7 @@ public class AStar implements SearchStrategy {
             String line;
 
             line = br.readLine();
-            rowLength = (int) Math.floor((line.length()-3)/2);
+            rowLength = (int) Math.floor((line.length() - 2.0) / 2.0);
             int rowNum = 0;
 
             while((line = br.readLine()) != null)
