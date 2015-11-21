@@ -5,9 +5,7 @@ import edu.csula.cs460.graph.Graph;
 import edu.csula.cs460.graph.Node;
 import edu.csula.cs460.graph.strategy.Representation;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,15 +18,7 @@ public class AStar implements SearchStrategy {
         @Override
         public int compare(Node x, Node y)
         {
-            if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) > f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
-                return 1;
-            }
-            else if(f_score.getOrDefault(x, Double.POSITIVE_INFINITY) < f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) {
-                return -1;
-            }
-            else {
-                return 0;
-            }
+            return (int) (f_score.getOrDefault(x, Double.POSITIVE_INFINITY) - f_score.getOrDefault(y, Double.POSITIVE_INFINITY));
         }
     }
 
@@ -126,18 +116,17 @@ public class AStar implements SearchStrategy {
         try
         {
             Map<Integer, Node> map = new HashMap<>();
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+            Scanner in = new Scanner(file);
 
             String line;
 
-            line = br.readLine();
-            rowLength = (int) Math.floor((line.length()) / 2.0);
+            line = in.nextLine();
+            rowLength = ((int) Math.floor((line.length()) / 2.0)) - 1;
             int rowNum = 0;
 
-            while((line = br.readLine()) != null)
+            while(in.hasNextLine())
             {
-                line = line.substring(1);
+                line = in.nextLine().substring(1);
                 //System.out.println(line);
                 int colNum = 0;
 
@@ -203,8 +192,7 @@ public class AStar implements SearchStrategy {
                 rowNum++;
             }
 
-            br.close();
-            fr.close();
+            in.close();
         }
         catch(IOException ignored) {}
 
