@@ -18,7 +18,7 @@ public class AStar implements SearchStrategy {
         @Override
         public int compare(Node x, Node y)
         {
-            return (int) (f_score.getOrDefault(x, Double.POSITIVE_INFINITY) - f_score.getOrDefault(y, Double.POSITIVE_INFINITY));
+            return (int) ((f_score.getOrDefault(x, Double.POSITIVE_INFINITY) - f_score.getOrDefault(y, Double.POSITIVE_INFINITY)) * 1000.0);
         }
     }
 
@@ -54,8 +54,8 @@ public class AStar implements SearchStrategy {
         Map<Node, Node> from = new HashMap<>();
         List<Node> visited = new ArrayList<>();
 
-        System.out.println("Source: " + source);
-        System.out.println("Dist: " + dist);
+//        System.out.println("Source: " + source);
+//        System.out.println("Dist: " + dist);
 
         Map<Node, Double> g_score = new HashMap<>();
         g_score.put(source, 0.0);
