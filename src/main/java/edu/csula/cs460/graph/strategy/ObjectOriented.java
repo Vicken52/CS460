@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 
 public class ObjectOriented implements Representation {
     private List<Node> nodes = new ArrayList<>();
+    private Set<Node> nodeCheck = new HashSet<>();
     private List<Edge> edges = new ArrayList<>();
+    private Set<Edge> edgeCheck = new HashSet<>();
     private Map<Node, List<Node>> neighbors = new HashMap<>();
 
     protected ObjectOriented(File file) {
@@ -88,8 +90,9 @@ public class ObjectOriented implements Representation {
 //        nodes.add(x);
 //        neighbors.put(x, new ArrayList<>());
 
-        if(nodes.add(x))
+        if(nodeCheck.add(x))
         {
+            nodes.add(x);
             neighbors.put(x, new ArrayList<>());
             return true;
         }
@@ -116,6 +119,8 @@ public class ObjectOriented implements Representation {
         if(neighbors.containsKey(x))
         {
             neighbors.remove(x);
+            nodeCheck.remove(x);
+            nodes.remove(x);
             nodes.parallelStream().filter(node -> neighbors.containsKey(node)).forEach(node -> {
                 if(neighbors.get(node).contains(x))
                 {
@@ -138,8 +143,9 @@ public class ObjectOriented implements Representation {
 //            }
 //        }
 
-        if(edges.add(x))
+        if(edgeCheck.add(x))
         {
+            edges.add(x);
             neighbors.get(x.getFrom()).add(x.getTo());
             return true;
         }
@@ -148,8 +154,9 @@ public class ObjectOriented implements Representation {
 
     @Override
     public boolean removeEdge(Edge x) {
-        if(edges.remove(x))
+        if(edgeCheck.remove(x))
         {
+            edges.remove(x);
             neighbors.get(x.getFrom()).remove(x.getTo());
             return true;
         }
