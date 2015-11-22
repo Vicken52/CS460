@@ -7,11 +7,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class AStarTest {
-    // used for bonus
     private Stopwatch timer;
     private ClassLoader classLoader;
 
@@ -62,7 +63,7 @@ public class AStarTest {
 
         assertEquals(
             "Test grid 2 from key point to key point",
-            "SSSSEEEEEEEEEEEEENNWNWWN",
+            "SSSSEEEEEEEEEEEEENNWNWNW",
             result
         );
     }
@@ -82,34 +83,57 @@ public class AStarTest {
         );
     }
 
-    @Test(timeout=100)
+    @Test(timeout=200)
     public void testAStar4() {
         File file = new File(classLoader.getResource("homework-3/grid-4.txt").getFile());
+        String expectedOutput = "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSESE";
 
         String result = new AStar().searchFromGridFile(file);
 
         System.out.println("A star 4 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 4 from key point to key point",
-            "ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSESSSSSSSSSSSSSSSSSSSSSS",
-            result
+            "Test grid 4 number of S",
+            findNumberOfCharacter(expectedOutput, "([S])"),
+            findNumberOfCharacter(result, "([S])")
         );
 
+        assertEquals(
+            "Test grid 4 number of E",
+            findNumberOfCharacter(expectedOutput, "([E])"),
+            findNumberOfCharacter(result, "([E])")
+        );
     }
 
-    @Test(timeout=550)
+    @Test
     public void testAStar5() {
         File file = new File(classLoader.getResource("homework-3/grid-5.txt").getFile());
+
+        String expectedOutput = "SSSSSSSSSSEESSEESESESSEESSEESESESESESSEESESESESESESSESEESESESSESEESSEESSEESESESESESSESEESSESESEESSESEESESSESEESESESESESSEESESESESESESESESESSEESESESESESESSEESSEESESSESEESSEESESSEESESESESESESSEESESESSEESESSESEESSEESESESESSEESSESEESESSESESESESEESSEESESESESESESESESESESESESESESESSEESESSEESSEESESESESSEESESESSEESESESSEESESESESESESESESESESESESESSESEESSEESESSEESESSEESSEESESSEESESESESESESESESESESSEESEEEESSSSSE";
 
         String result = new AStar().searchFromGridFile(file);
 
         System.out.println("A star 5 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 5 from key point to key point",
-            "SSSSSSSSEESESEEESSSSSESSEESESSESESEESSEESSSEEESEESSESSEEESSSESESESESESSEEESSSEESEESSEEESSSESEESSESEESSESEEESSEESSESESEESSESSEESSEESESSEESSESESEEEESSSEEESESESESESSEESSSESEESESSSESSEEESSESESESESESEESSEESESESSEEESEESSSEEESESESSSSEESSESESESESSEEESEESESSEEESSSSESESESESEEESEESSEEESSSEESSSEEEESSSSEESEESESSESSEEESSESSESSEESEEESSSEEESESESSESSEESSEEESSEESSEESSEEESSESSESSSSESEESEESEESSESSESESEEESESSSEEEEESSSSSE",
-            result
+            "Test grid 5 number of S",
+            findNumberOfCharacter(expectedOutput, "([S])"),
+            findNumberOfCharacter(result, "([S])")
         );
+
+        assertEquals(
+            "Test grid 5 number of E",
+            findNumberOfCharacter(expectedOutput, "([E])"),
+            findNumberOfCharacter(result, "([E])")
+        );
+    }
+
+    private int findNumberOfCharacter(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex); //case insensitive, use [g] for only lower
+        Matcher matcher = pattern.matcher(input);
+        int count = 0;
+        while (matcher.find()) count++;
+
+        return count;
     }
 }
