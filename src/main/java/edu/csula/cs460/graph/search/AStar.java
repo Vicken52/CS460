@@ -37,15 +37,15 @@ public class AStar implements SearchStrategy {
                 Math.pow((double) (x.getId() / rowLength) - (double) (y.getId() / rowLength), 2.0));
     }
 
-    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n)
+    private List<Edge> reconstruct_path(Graph graph, Map<Node, Node> from, Node n, Node s)
     {
         List<Edge> result = new ArrayList<>();
 
-        while(from.containsKey(n))
+        do
         {
             result.add(0, new Edge(from.get(n), n, graph.distance(from.get(n), n)));
             n = from.get(n);
-        }
+        }while(!result.get(0).getFrom().equals(s));
 
         return result;
     }
@@ -53,7 +53,7 @@ public class AStar implements SearchStrategy {
     @Override
     public List<Edge> search(Graph graph, Node source, Node dist) {
         Map<Node, Node> from = new HashMap<>();
-        List<Node> visited = new ArrayList<>();
+        Set<Node> visited = new HashSet<>();
 
 //        System.out.println("Source: " + source);
 //        System.out.println("Dist: " + dist);
@@ -76,28 +76,22 @@ public class AStar implements SearchStrategy {
 
             if(n.getId() == dist.getId())
             {
-                return reconstruct_path(graph, from, n);
+                return reconstruct_path(graph, from, n, source);
             }
 
-            graph.neighbors(n).stream().filter(node -> !visited.contains(node)).forEach(node -> {
+            graph.neighbors(n).stream().filter(node -> !visited.contains(node) && !queue.contains(node)).forEach(node -> {
+                double tmp = g_score.getOrDefault(n, Double.POSITIVE_INFINITY) + (double) graph.distance(n, node);
 
-                if (!queue.contains(node))
+                queue.add(node);
+
+                if (tmp <= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
                 {
-                    double tmp = g_score.getOrDefault(n, Double.POSITIVE_INFINITY) + (double) graph.distance(n, node);
-
-                    if(!queue.contains(node))
-                    {
-                        queue.add(node);
-                    }
-
-                    if (tmp <= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
-                    {
-                        //System.out.println(n +  " " + node);
-                        from.put(node, n);
-                        g_score.put(node, tmp);
-                        f_score.put(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
-                    }
+                    //System.out.println(n +  " " + node);
+                    from.put(node, n);
+                    g_score.put(node, tmp);
+                    f_score.put(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
                 }
+
             });
         }
 

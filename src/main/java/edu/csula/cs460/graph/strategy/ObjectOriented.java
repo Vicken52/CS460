@@ -4,14 +4,11 @@ import edu.csula.cs460.graph.Edge;
 import edu.csula.cs460.graph.Node;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.util.Map;
 
 public class ObjectOriented implements Representation {
     private List<Node> nodes = new ArrayList<>();
@@ -82,6 +79,14 @@ public class ObjectOriented implements Representation {
 //                return false;
 //            }
 //        }
+//
+//        if(nodes.parallelStream().filter(node -> node.equals(x)).count() > 0)
+//        {
+//            return false;
+//        }
+//
+//        nodes.add(x);
+//        neighbors.put(x, new ArrayList<>());
 
         if(nodes.add(x))
         {
@@ -108,8 +113,17 @@ public class ObjectOriented implements Representation {
 //            }
 //        return false;
 
-        if(neighbors.remove(x) != null)
+        if(neighbors.containsKey(x))
         {
+            neighbors.remove(x);
+            nodes.parallelStream().filter(node -> neighbors.containsKey(node)).forEach(node -> {
+                if(neighbors.get(node).contains(x))
+                {
+                    List<Node> tmp = neighbors.get(node);
+                    tmp.remove(x);
+                    neighbors.replace(node, tmp);
+                }
+            });
             return true;
         }
 
@@ -126,9 +140,7 @@ public class ObjectOriented implements Representation {
 
         if(edges.add(x))
         {
-            List<Node> tmp = neighbors.get(x.getFrom());
-            tmp.add(x.getTo());
-            neighbors.replace(x.getFrom(), tmp);
+            neighbors.get(x.getFrom()).add(x.getTo());
             return true;
         }
         return false;
@@ -136,12 +148,10 @@ public class ObjectOriented implements Representation {
 
     @Override
     public boolean removeEdge(Edge x) {
-        for(int j = 0; j < edges.size(); j++) {
-            if(edges.get(j).equals(x))
-            {
-                edges.remove(j);
-                return true;
-            }
+        if(edges.remove(x))
+        {
+            neighbors.get(x.getFrom()).remove(x.getTo());
+            return true;
         }
         return false;
     }
