@@ -18,7 +18,6 @@ public class ObjectOriented implements Representation {
     private Map<Node, Map<Node, Integer>> neighbors = new HashMap<>();
 
     protected ObjectOriented(File file) {
-        //TODO: parse file content and add it to nodes
         try
         {
             FileReader fr = new FileReader(file);
@@ -71,24 +70,10 @@ public class ObjectOriented implements Representation {
     @Override
     public List<Node> neighbors(Node x) {
         return new ArrayList<>(neighbors.get(x).keySet());
-        //return edges.parallelStream().filter(edge -> edge.getFrom().equals(x)).map(Edge::getTo).collect(Collectors.toList());
     }
 
     @Override
     public boolean addNode(Node x) {
-//        for (Node node : nodes) {
-//            if (node.equals(x)) {
-//                return false;
-//            }
-//        }
-//
-//        if(nodes.parallelStream().filter(node -> node.equals(x)).count() > 0)
-//        {
-//            return false;
-//        }
-//
-//        nodes.add(x);
-//        neighbors.put(x, new ArrayList<>());
 
         if(nodeCheck.add(x))
         {
@@ -102,20 +87,6 @@ public class ObjectOriented implements Representation {
 
     @Override
     public boolean removeNode(Node x) {
-//        for (Node node : nodes)
-//            if (node.equals(x)) {
-//                for (int j = 0; j < edges.size(); j++) {
-//
-//                    if (edges.get(j).getTo().equals(x)) {
-//                        edges.remove(j);
-//                        neighbors.remove(x);
-//                    }
-//
-//                }
-//                return true;
-//            }
-//        return false;
-
         if(neighbors.containsKey(x))
         {
             neighbors.remove(x);
@@ -137,11 +108,6 @@ public class ObjectOriented implements Representation {
 
     @Override
     public boolean addEdge(Edge x) {
-//        for (Edge edge : edges) {
-//            if (edge.equals(x)) {
-//                return false;
-//            }
-//        }
 
         if(edgeCheck.add(x))
         {

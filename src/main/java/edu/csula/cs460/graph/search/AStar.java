@@ -1,6 +1,5 @@
 package edu.csula.cs460.graph.search;
 
-import com.google.common.base.Stopwatch;
 import edu.csula.cs460.graph.Edge;
 import edu.csula.cs460.graph.Graph;
 import edu.csula.cs460.graph.Node;
@@ -14,6 +13,14 @@ public class AStar implements SearchStrategy {
     private int rowLength = 0;
     private  Map<Node, Double> f_score;
 
+    /*
+    Distance:
+        0 = North
+        1 = East
+        2 = South
+        3 = West
+     */
+
     private class NodeComparator implements Comparator<Node>
     {
         @Override
@@ -22,14 +29,6 @@ public class AStar implements SearchStrategy {
             return f_score.getOrDefault(x, Double.POSITIVE_INFINITY).compareTo(f_score.getOrDefault(y, Double.POSITIVE_INFINITY));
         }
     }
-
-    /*
-    Distance:
-        0 = North
-        1 = East
-        2 = South
-        3 = West
-     */
 
     public double value(Node x, Node y)
     {
@@ -55,9 +54,6 @@ public class AStar implements SearchStrategy {
         Map<Node, Node> from = new HashMap<>();
         Set<Node> visited = new HashSet<>();
 
-//        System.out.println("Source: " + source);
-//        System.out.println("Dist: " + dist);
-
         Map<Node, Double> g_score = new HashMap<>();
         g_score.put(source, 0.0);
 
@@ -71,7 +67,6 @@ public class AStar implements SearchStrategy {
         while(!queue.isEmpty())
         {
             Node n = queue.poll();
-            //System.out.print(n);
             visited.add(n);
 
             if(n.getId() == dist.getId())
@@ -84,9 +79,8 @@ public class AStar implements SearchStrategy {
 
                 queue.add(node);
 
-                if (tmp < g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
+                if (tmp <= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
                 {
-                    //System.out.println(n +  " " + node);
                     from.put(node, n);
                     g_score.put(node, tmp);
                     f_score.put(node, tmp + value(node, dist));
@@ -113,8 +107,6 @@ public class AStar implements SearchStrategy {
             Map<Integer, Node> map = new HashMap<>();
             Scanner in = new Scanner(file);
 
-            Stopwatch timer = Stopwatch.createStarted();
-
             String line;
 
             line = in.nextLine();
@@ -124,7 +116,6 @@ public class AStar implements SearchStrategy {
             while(in.hasNextLine())
             {
                 line = in.nextLine().substring(1);
-                //System.out.println(line);
                 int colNum = 0;
 
                 if(!line.contains("#") && !line.contains("@"))
@@ -134,7 +125,6 @@ public class AStar implements SearchStrategy {
                         Node tempN = new Node(rowLength*rowNum + i);
                         map.put(rowLength*rowNum + i, tempN);
                         graph.addNode(tempN);
-                        //System.out.println(tempN);
 
                         if(map.containsKey(rowLength*rowNum + i - 1) && i != 0)
                         {
@@ -159,7 +149,6 @@ public class AStar implements SearchStrategy {
                             Node tempN = new Node(rowLength * rowNum + colNum);
                             map.put(rowLength * rowNum + colNum, tempN);
                             graph.addNode(tempN);
-                            //System.out.println(tempN);
 
                             if (map.containsKey(rowLength * rowNum + colNum - 1) && colNum != 0) {
                                 graph.addEdge(new Edge(map.get(rowLength * rowNum + colNum - 1), tempN, 1));
@@ -172,10 +161,8 @@ public class AStar implements SearchStrategy {
                             }
 
                             if (line.startsWith("@1")) {
-                                //System.out.println(rowNum + " " + colNum);
                                 source = tempN;
                             } else if (line.startsWith("@")) {
-                                //System.out.println(rowNum + " " + colNum);
                                 dist = tempN;
                             }
                         }
@@ -190,8 +177,6 @@ public class AStar implements SearchStrategy {
             }
 
             in.close();
-
-            System.out.println("Generate Graph = " + timer.stop());
         }
         catch(IOException ignored) {}
 
@@ -201,7 +186,6 @@ public class AStar implements SearchStrategy {
         {
             for (Edge edge : route)
             {
-                //System.out.println(edge);
                 if (edge.getValue() == 0) {
                     result += "N";
                 } else if (edge.getValue() == 1) {
