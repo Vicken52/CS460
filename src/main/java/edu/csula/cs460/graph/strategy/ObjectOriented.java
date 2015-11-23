@@ -15,7 +15,7 @@ public class ObjectOriented implements Representation {
     private Set<Node> nodeCheck = new HashSet<>();
     private List<Edge> edges = new ArrayList<>();
     private Set<Edge> edgeCheck = new HashSet<>();
-    private Map<Node, List<Node>> neighbors = new HashMap<>();
+    private Map<Node, Map<Node, Integer>> neighbors = new HashMap<>();
 
     protected ObjectOriented(File file) {
         //TODO: parse file content and add it to nodes
@@ -70,7 +70,7 @@ public class ObjectOriented implements Representation {
 
     @Override
     public List<Node> neighbors(Node x) {
-        return neighbors.get(x);
+        return new ArrayList<>(neighbors.get(x).keySet());
         //return edges.parallelStream().filter(edge -> edge.getFrom().equals(x)).map(Edge::getTo).collect(Collectors.toList());
     }
 
@@ -93,7 +93,7 @@ public class ObjectOriented implements Representation {
         if(nodeCheck.add(x))
         {
             nodes.add(x);
-            neighbors.put(x, new ArrayList<>());
+            neighbors.put(x, new HashMap<>());
             return true;
         }
 
@@ -122,9 +122,9 @@ public class ObjectOriented implements Representation {
             nodeCheck.remove(x);
             nodes.remove(x);
             nodes.parallelStream().filter(node -> neighbors.containsKey(node)).forEach(node -> {
-                if(neighbors.get(node).contains(x))
+                if(neighbors.get(node).containsKey(x))
                 {
-                    List<Node> tmp = neighbors.get(node);
+                    Map<Node, Integer> tmp = neighbors.get(node);
                     tmp.remove(x);
                     neighbors.replace(node, tmp);
                 }
@@ -146,7 +146,7 @@ public class ObjectOriented implements Representation {
         if(edgeCheck.add(x))
         {
             edges.add(x);
-            neighbors.get(x.getFrom()).add(x.getTo());
+            neighbors.get(x.getFrom()).put(x.getTo(), x.getValue());
             return true;
         }
         return false;
@@ -165,9 +165,6 @@ public class ObjectOriented implements Representation {
 
     @Override
     public int distance(Node from, Node to) {
-        for (Edge edge : edges) {
-            if (edge.getFrom().equals(from) && edge.getTo().equals(to)) return edge.getValue();
-        }
-        return 0;
+        return neighbors.get(from).get(to);
     }
 }

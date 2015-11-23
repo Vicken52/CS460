@@ -84,12 +84,12 @@ public class AStar implements SearchStrategy {
 
                 queue.add(node);
 
-                if (tmp <= g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
+                if (tmp < g_score.getOrDefault(node, Double.POSITIVE_INFINITY))
                 {
                     //System.out.println(n +  " " + node);
                     from.put(node, n);
                     g_score.put(node, tmp);
-                    f_score.put(node, f_score.getOrDefault(n, Double.POSITIVE_INFINITY) + value(node, dist));
+                    f_score.put(node, tmp + value(node, dist));
                 }
 
             });
