@@ -32,7 +32,7 @@ public class AStar implements SearchStrategy {
 
     public double value(Node x, Node y)
     {
-        return Math.sqrt(Math.pow((double) ( x.getId() % rowLength) - (double) (y.getId() % rowLength), 2.0) +
+        return Math.sqrt(Math.pow((double) (x.getId() % rowLength) - (double) (y.getId() % rowLength), 2.0) +
                 Math.pow((double) (x.getId() / rowLength) - (double) (y.getId() / rowLength), 2.0));
     }
 
@@ -110,7 +110,7 @@ public class AStar implements SearchStrategy {
             String line;
 
             line = in.nextLine();
-            rowLength = ((int) Math.floor((line.length()) / 2.0)) - 1;
+            rowLength = ((int) Math.floor((line.length()) / 2.0));
             int rowNum = 0;
 
             while(in.hasNextLine())
