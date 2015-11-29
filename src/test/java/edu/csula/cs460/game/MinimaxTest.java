@@ -15,7 +15,7 @@ public class MinimaxTest {
 
     @Before
     public void setUp() throws Exception {
-        for (int i = 0; i < 8; i ++) {
+        for (int i = 0; i < 7; i ++) {
             graph.addNode(new Node<>(i, 0));
         }
         graph.addNode(new Node<>(7, -10));
@@ -60,7 +60,7 @@ public class MinimaxTest {
     @Test
     public void testGetBestMove() {
         assertEquals(
-            new Node<>(2, -9),
+            new Node<>(1, 8),
             Minimax.getBestMove(graph, new Node<>(0, 0), 3, true)
         );
 
