@@ -74,14 +74,18 @@ The schedule below is tentative and is subject to change.
     * **Q2: Heuristic Search**
 
 * Lecture 8: [Alpha-Beta pruning](documents/notes/alpha-beta-pruning.md) (John)
-    * **HW3: Heuristic Search due Sunday midnight Nov 15th**
+    * **HW3: Heuristic Search due Wednesday midnight Nov 25th**
 
-* Lecture 9: [11/21] Min-max (John, Eric)
-    * Q3: Alpha-Beta pruning
-    * Quiz 4: Min-max
-    * Homework 4 announcement
+* Lecture 9: [11/21] [Min-max & Alpha-Beta continued](documents/notes/alpha-beta-pruning-coninued.md) (John, Eric)
+    * Q3: Minimax && Alpha-Beta **due on Sunday night Nov 22th**
+    * [Homework 4 announcement](documents/homeworks/homework4.md) **Due at beginning of class at Dec 5th (9am)**
+    * [Project Preparation online](documents/final-project/project.md)
 
-* Lecture 10: [11/28] No class due to Thanks Giving, Happy Turkey day! Course wrap-up and [Project Preparation online](documents/final-project/project.md)
+* Holiday: [11/28] No class due to Thanks Giving, Happy Turkey day!
+
+* Lecture 10: [12/5] Last day of class
+    * In class tournament
+    * Q4
     * **HW4: Search Optimization due**
 
-* Final: Activity - In class tournament (project) (Have fun!) (Eric/John)
+* Final: Activity - In class tournament continue (with presentation to show me what you have done) (Have fun!) (Eric/John)

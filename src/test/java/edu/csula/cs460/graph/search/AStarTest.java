@@ -62,9 +62,9 @@ public class AStarTest {
         System.out.println("A star 2 spends " + timer.stop());
 
         assertEquals(
-                "Test grid 2 from key point to key point",
-                "SSSSEEEEEEEEEEEEENNWNWNW",
-                result
+            "Test grid 2 from key point to key point",
+            "SSSSEEEEEEEEEEEEENNWNWNW",
+            result
         );
     }
 
@@ -93,15 +93,15 @@ public class AStarTest {
         System.out.println("A star 4 spends " + timer.stop());
 
         assertEquals(
-                "Test grid 4 number of S",
-                findNumberOfCharacter(expectedOutput, "([S])"),
-                findNumberOfCharacter(result, "([S])")
+            "Test grid 4 number of S",
+            findNumberOfCharacter(expectedOutput, "([S])"),
+            findNumberOfCharacter(result, "([S])")
         );
 
         assertEquals(
-                "Test grid 4 number of E",
-                findNumberOfCharacter(expectedOutput, "([E])"),
-                findNumberOfCharacter(result, "([E])")
+            "Test grid 4 number of E",
+            findNumberOfCharacter(expectedOutput, "([E])"),
+            findNumberOfCharacter(result, "([E])")
         );
     }
 
@@ -116,16 +116,25 @@ public class AStarTest {
         System.out.println("A star 5 spends " + timer.stop());
 
         assertEquals(
-                "Test grid 5 number of S",
-                findNumberOfCharacter(expectedOutput, "([S])"),
-                findNumberOfCharacter(result, "([S])")
+            "Test grid 5 number of S",
+            findNumberOfCharacter(expectedOutput, "([S])"),
+            findNumberOfCharacter(result, "([S])")
         );
 
         assertEquals(
-                "Test grid 5 number of E",
-                findNumberOfCharacter(expectedOutput, "([E])"),
-                findNumberOfCharacter(result, "([E])")
+            "Test grid 5 number of E",
+            findNumberOfCharacter(expectedOutput, "([E])"),
+            findNumberOfCharacter(result, "([E])")
         );
+    }
+
+    private int findNumberOfCharacter(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex); //case insensitive, use [g] for only lower
+        Matcher matcher = pattern.matcher(input);
+        int count = 0;
+        while (matcher.find()) count++;
+
+        return count;
     }
 
     private int findNumberOfCharacter(String input, String regex) {
