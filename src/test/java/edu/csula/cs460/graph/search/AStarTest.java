@@ -44,7 +44,7 @@ public class AStarTest {
 
         String result = new AStar().searchFromGridFile(file);
 
-        System.out.println("A star 1 spends " + timer.stop());
+//        System.out.println("A star 1 spends " + timer.stop());
 
         assertEquals(
                 "Test grid 1 from key point to key point",
@@ -59,11 +59,11 @@ public class AStarTest {
 
         String result = new AStar().searchFromGridFile(file);
 
-        System.out.println("A star 2 spends " + timer.stop());
+//        System.out.println("A star 2 spends " + timer.stop());
 
         assertEquals(
             "Test grid 2 from key point to key point",
-            "SSSSEEEEEEEEEEEEENNWNWNW",
+            "SSSSEEEEEEEEEEEEENNWNNWW",
             result
         );
     }
@@ -74,7 +74,7 @@ public class AStarTest {
 
         String result = new AStar().searchFromGridFile(file);
 
-        System.out.println("A star 3 spends " + timer.stop());
+//        System.out.println("A star 3 spends " + timer.stop());
 
         assertEquals(
                 "Test grid 3 from key point to key point",
@@ -90,7 +90,7 @@ public class AStarTest {
 
         String result = new AStar().searchFromGridFile(file);
 
-        System.out.println("A star 4 spends " + timer.stop());
+//        System.out.println("A star 4 spends " + timer.stop());
 
         assertEquals(
             "Test grid 4 number of S",
@@ -113,7 +113,7 @@ public class AStarTest {
 
         String result = new AStar().searchFromGridFile(file);
 
-        System.out.println("A star 5 spends " + timer.stop());
+//        System.out.println("A star 5 spends " + timer.stop());
 
         assertEquals(
             "Test grid 5 number of S",
