@@ -5,7 +5,49 @@ import edu.csula.cs460.graph.Node;
 
 public class AlphaBeta {
     public static Node getBestMove(Graph graph, Node source, Integer depth, Integer alpha, Integer beta, Boolean max) {
-        // TODO: implement your alpha beta pruning algorithm here
-        return null;
+
+        if(depth == 0 | graph.neighbors(source).size() == 0)
+        {
+            return source;
+        }
+
+        if(max) {
+            Node nodeValue = null;
+            int value = Integer.MIN_VALUE;
+
+            for(Node node : graph.neighbors(source)) {
+                Node nodeTmp = getBestMove(graph, node, depth - 1, alpha, beta, false);
+
+                if(value < (Integer) nodeTmp.getData())
+                {
+                    nodeValue = nodeTmp;
+                    value = (Integer) nodeTmp.getData();
+                }
+                alpha = Integer.max(alpha, value);
+
+                if(beta <= alpha) { break; }
+            }
+
+            return nodeValue;
+        }
+        else {
+            Node nodeValue = null;
+            int value = Integer.MAX_VALUE;
+
+            for(Node node : graph.neighbors(source)) {
+                Node nodeTmp = getBestMove(graph, node, depth - 1, alpha, beta, true);
+
+                if(value > (Integer) nodeTmp.getData())
+                {
+                    nodeValue = nodeTmp;
+                    value = (Integer) nodeTmp.getData();
+                }
+                beta = Integer.min(alpha, value);
+
+                if(beta <= alpha) { break; }
+            }
+
+            return nodeValue;
+        }
     }
 }

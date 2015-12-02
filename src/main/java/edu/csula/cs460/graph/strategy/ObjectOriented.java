@@ -74,9 +74,9 @@ public class ObjectOriented implements Representation {
 
     @Override
     public List<Node> neighbors(Node x) {
-        List<Node> nodes = new ArrayList<>(neighbors.get(x).keySet());
-        Collections.reverse(nodes);
-        return nodes;
+        List<Node> nodesTmp = new ArrayList<>(neighbors.get(x).keySet());
+        Collections.reverse(nodesTmp);
+        return nodesTmp;
     }
 
     @Override
