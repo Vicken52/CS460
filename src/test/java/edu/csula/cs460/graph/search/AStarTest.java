@@ -136,13 +136,4 @@ public class AStarTest {
 
         return count;
     }
-
-    private int findNumberOfCharacter(String input, String regex) {
-        Pattern pattern = Pattern.compile(regex); //case insensitive, use [g] for only lower
-        Matcher matcher = pattern.matcher(input);
-        int count = 0;
-        while (matcher.find()) count++;
-
-        return count;
-    }
 }

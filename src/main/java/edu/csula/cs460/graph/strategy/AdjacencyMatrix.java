@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.Optional;
 
 public class AdjacencyMatrix implements Representation {
   private Node[] nodes;
@@ -144,6 +145,11 @@ public class AdjacencyMatrix implements Representation {
     Collections.addAll(nodeTmp, nodes);
 
     return nodeTmp;
+  }
+
+  @Override
+  public Optional<Node> getNode(int index) {
+    return Optional.of(nodes[index]);
   }
 
   @Override

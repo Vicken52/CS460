@@ -58,6 +58,11 @@ public class ObjectOriented implements Representation {
     }
 
     @Override
+    public Optional<Node> getNode(int index) {
+        return Optional.of(nodes.get(index));
+    }
+
+    @Override
     public boolean adjacent(Node x, Node y) {
         for (Edge edge : edges) {
             if (edge.getFrom().equals(x) && edge.getTo().equals(y)) {

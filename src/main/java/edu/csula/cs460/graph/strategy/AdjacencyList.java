@@ -4,10 +4,7 @@ import edu.csula.cs460.graph.Node;
 import edu.csula.cs460.graph.Edge;
 
 import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import java.io.IOException;
 import java.io.FileReader;
@@ -66,6 +63,11 @@ public class AdjacencyList implements Representation {
     public List<Node> getNodes() {
 
         return nodes;
+    }
+
+    @Override
+    public Optional<Node> getNode(int index) {
+        return Optional.of(nodes.get(index));
     }
 
     @Override
