@@ -4,14 +4,14 @@ import edu.csula.cs460.graph.Graph;
 import edu.csula.cs460.graph.Node;
 
 public class Minimax {
-    public static Node getBestMove(Graph graph, Node root, Integer depth, Boolean max) {
+    public static Node getBestMove(Graph graph, Node root, Integer depth, Boolean min) {
         if(depth == 0 || graph.neighbors(root).size() == 0)
         {
             return root;
         }
 
 
-        if(max) {
+        if(min) {
             Node tmp = null;
             int bestValue = Integer.MIN_VALUE;
 
