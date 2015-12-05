@@ -4,7 +4,10 @@ import edu.csula.cs460.graph.Graph;
 import edu.csula.cs460.graph.Node;
 
 public class AlphaBeta {
-    public static Node getBestMove(Graph graph, Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
+    private static Graph graph;
+    private static Node mainRoot;
+
+    private static Node alphabeta(Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
 
         if(depth == 0 | graph.neighbors(source).size() == 0)
         {
@@ -16,7 +19,7 @@ public class AlphaBeta {
             int value = Integer.MIN_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = getBestMove(graph, node, depth - 1, alpha, beta, false);
+                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, false);
 
                 if(value < (Integer) nodeTmp.getData())
                 {
@@ -25,9 +28,19 @@ public class AlphaBeta {
                 }
                 alpha = Integer.max(alpha, value);
 
-                if(beta <= alpha) { break; }
+                if(beta <= alpha) {
+                    beta = Integer.MIN_VALUE;
+                }
             }
 
+            if(source.getId() == mainRoot.getId())
+            {
+                assert nodeValue != null;
+                mainRoot.setData(nodeValue.getData());
+            }
+
+            assert nodeValue != null;
+            graph.getNode(source.getId()).get().setData(nodeValue.getData());
             return nodeValue;
         }
         else {
@@ -35,7 +48,7 @@ public class AlphaBeta {
             int value = Integer.MAX_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = getBestMove(graph, node, depth - 1, alpha, beta, true);
+                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, true);
 
                 if(value > (Integer) nodeTmp.getData())
                 {
@@ -44,10 +57,43 @@ public class AlphaBeta {
                 }
                 beta = Integer.min(alpha, value);
 
-                if(beta <= alpha) { break; }
+                if(beta <= alpha) {
+                    alpha = Integer.MAX_VALUE;
+                }
             }
 
+            if(source.getId() == mainRoot.getId())
+            {
+                assert nodeValue != null;
+                mainRoot.setData(nodeValue.getData());
+            }
+
+            assert nodeValue != null;
+            graph.getNode(source.getId()).get().setData(nodeValue.getData());
             return nodeValue;
         }
+    }
+
+    public static Node getBestMove(Graph graphTmp, Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
+
+        graphTmp.getNodes().forEach(System.out::println);
+
+        graph = graphTmp;
+        mainRoot = source;
+
+        alphabeta(source, depth, alpha, beta, min);
+
+        graphTmp.getNodes().forEach(System.out::println);
+
+        for(Node node : graph.neighborsSearch(mainRoot))
+        {
+            Node tmp = graph.getNode(node.getId()).get();
+            if(tmp.getData().equals(mainRoot.getData()))
+            {
+                return tmp;
+            }
+        }
+
+        return null;
     }
 }
