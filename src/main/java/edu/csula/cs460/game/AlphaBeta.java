@@ -6,10 +6,8 @@ import edu.csula.cs460.graph.Node;
 public class AlphaBeta {
     private static Graph graph;
     private static Node mainRoot;
-    private static int alpha;
-    private static int beta;
 
-    private static Node alphabeta(Node source, Integer depth, Boolean min) {
+    private static Node alphabeta(Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
 
         if(depth == 0 | graph.neighbors(source).size() == 0)
         {
@@ -21,7 +19,7 @@ public class AlphaBeta {
             int value = Integer.MIN_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = alphabeta(node, depth - 1, false);
+                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, false);
 
                 if(value < (Integer) nodeTmp.getData())
                 {
@@ -51,14 +49,14 @@ public class AlphaBeta {
             int value = Integer.MAX_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = alphabeta(node, depth - 1, true);
+                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, true);
 
                 if(value > (Integer) nodeTmp.getData())
                 {
                     nodeValue = nodeTmp;
                     value = (Integer) nodeTmp.getData();
                 }
-                beta = Integer.min(alpha, value);
+                beta = Integer.min(beta, value);
 
                 if(beta <= alpha) {
                     alpha = Integer.MAX_VALUE;
@@ -78,19 +76,12 @@ public class AlphaBeta {
         }
     }
 
-    public static Node getBestMove(Graph graphTmp, Node source, Integer depth, Integer alphaTmp, Integer betaTmp, Boolean min) {
-
-        graphTmp.getNodes().forEach(System.out::println);
+    public static Node getBestMove(Graph graphTmp, Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
 
         graph = graphTmp;
         mainRoot = source;
-        alpha = alphaTmp;
-        beta = betaTmp;
-
-
-        alphabeta(source, depth, min);
-
-        graphTmp.getNodes().forEach(System.out::println);
+        
+        alphabeta(source, depth, alpha, beta, min);
 
         for(Node node : graph.neighborsSearch(mainRoot))
         {
