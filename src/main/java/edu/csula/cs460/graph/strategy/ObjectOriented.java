@@ -9,6 +9,7 @@ import java.util.*;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.stream.Collectors;
 
 public class ObjectOriented implements Representation {
     private List<Node> nodes = new ArrayList<>();
@@ -75,6 +76,15 @@ public class ObjectOriented implements Representation {
     @Override
     public List<Node> neighbors(Node x) {
         List<Node> nodesTmp = new ArrayList<>(neighbors.get(x).keySet());
+        Collections.reverse(nodesTmp);
+        return nodesTmp;
+    }
+
+    @Override
+    public List<Node> neighborsSearch(Node x) {
+        List<Node> nodesTmp = edges.stream()
+                .filter(edge -> x.getId() == edge.getFrom().getId()).map(Edge::getTo)
+                .collect(Collectors.toList());
         Collections.reverse(nodesTmp);
         return nodesTmp;
     }

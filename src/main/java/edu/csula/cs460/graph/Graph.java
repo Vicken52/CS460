@@ -101,4 +101,6 @@ public class Graph {
     public String toString() {
         return strategy.toString();
     }
+
+    public List<Node> neighborsSearch(Node node) { return strategy.neighborsSearch(node); }
 }

@@ -181,6 +181,29 @@ public class AdjacencyMatrix implements Representation {
   }
 
   @Override
+  public List<Node> neighborsSearch(Node x) {
+    List<Node> neighbors = new ArrayList<>();
+    int indexX = 0;
+    for(int i = 0; i < nodes.length; i++)
+    {
+      if(nodes[i].equals(x))
+      {
+        indexX = i;
+        break;
+      }
+    }
+
+    for(int i = 0; i < nodes.length; i++)
+    {
+      if(adjacencyMatrix[indexX][i] > 0)
+      {
+        neighbors.add(nodes[i]);
+      }
+    }
+    return neighbors;
+  }
+
+  @Override
   public boolean addNode(Node x) {
 
     if(nodes.length > 0)

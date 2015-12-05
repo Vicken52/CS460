@@ -81,6 +81,11 @@ public class AdjacencyList implements Representation {
     }
 
     @Override
+    public List<Node> neighborsSearch(Node x) {
+        return adjacencyList.get(x);
+    }
+
+    @Override
     public boolean addNode(Node x) {
         for (Node node : nodes) {
             if (node.equals(x)) {
