@@ -6,8 +6,10 @@ import edu.csula.cs460.graph.Node;
 public class AlphaBeta {
     private static Graph graph;
     private static Node mainRoot;
+    private static int alpha;
+    private static int beta;
 
-    private static Node alphabeta(Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
+    private static Node alphabeta(Node source, Integer depth, Boolean min) {
 
         if(depth == 0 | graph.neighbors(source).size() == 0)
         {
@@ -19,7 +21,7 @@ public class AlphaBeta {
             int value = Integer.MIN_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, false);
+                Node nodeTmp = alphabeta(node, depth - 1, false);
 
                 if(value < (Integer) nodeTmp.getData())
                 {
@@ -30,6 +32,7 @@ public class AlphaBeta {
 
                 if(beta <= alpha) {
                     beta = Integer.MIN_VALUE;
+                    break;
                 }
             }
 
@@ -48,7 +51,7 @@ public class AlphaBeta {
             int value = Integer.MAX_VALUE;
 
             for(Node node : graph.neighbors(source)) {
-                Node nodeTmp = alphabeta(node, depth - 1, alpha, beta, true);
+                Node nodeTmp = alphabeta(node, depth - 1, true);
 
                 if(value > (Integer) nodeTmp.getData())
                 {
@@ -59,6 +62,7 @@ public class AlphaBeta {
 
                 if(beta <= alpha) {
                     alpha = Integer.MAX_VALUE;
+                    break;
                 }
             }
 
@@ -74,14 +78,17 @@ public class AlphaBeta {
         }
     }
 
-    public static Node getBestMove(Graph graphTmp, Node source, Integer depth, Integer alpha, Integer beta, Boolean min) {
+    public static Node getBestMove(Graph graphTmp, Node source, Integer depth, Integer alphaTmp, Integer betaTmp, Boolean min) {
 
         graphTmp.getNodes().forEach(System.out::println);
 
         graph = graphTmp;
         mainRoot = source;
+        alpha = alphaTmp;
+        beta = betaTmp;
 
-        alphabeta(source, depth, alpha, beta, min);
+
+        alphabeta(source, depth, min);
 
         graphTmp.getNodes().forEach(System.out::println);
 
