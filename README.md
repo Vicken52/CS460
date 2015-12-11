@@ -1,7 +1,5 @@
 
-# Artificial Intelligence [![Build Status](https://travis-ci.org/csula/cs460-fall-2015.svg?branch=master)](https://travis-ci.org/csula/cs460-fall-2015)
-
-[![Join the chat at https://gitter.im/csula/cs460-fall-2015](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/csula/cs460-fall-2015?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Artificial Intelligence [![Build Status](https://travis-ci.com/Vicken52/CS460.svg?token=pA15qZerdUQcxuJvJWRW)](https://travis-ci.com/Vicken52/CS460)
 
 Welcome to CS460 Artificial Intelligence. This is a fast-paced course with emphasis theory and practice.  Please check the `README.md` often for news and announcements.
 
