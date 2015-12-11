@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Representation {
+
     enum STRATEGY {
         ADJACENCY_LIST,
         ADJACENCY_MATRIX,
@@ -45,6 +46,8 @@ public interface Representation {
         }
     }
 
+    List<Node> getNodes();
+
     boolean adjacent(Node x, Node y);
 
     List<Node> neighbors(Node x);
@@ -60,6 +63,8 @@ public interface Representation {
     int distance(Node from, Node to);
 
     Optional<Node> getNode(int index);
+
+    List<Node> neighborsSearch(Node x);
 
     String toString();
 }

@@ -14,6 +14,13 @@ public class Graph {
     }
 
     /**
+     * Return all nodes
+     */
+    public List<Node> getNodes() {
+        return strategy.getNodes();
+    }
+
+    /**
      * Return true if node x is connecting to y false otherwise
      */
     public boolean adjacent(Node x, Node y) {
@@ -94,4 +101,6 @@ public class Graph {
     public String toString() {
         return strategy.toString();
     }
+
+    public List<Node> neighborsSearch(Node node) { return strategy.neighborsSearch(node); }
 }

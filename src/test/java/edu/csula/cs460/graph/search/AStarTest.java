@@ -47,9 +47,9 @@ public class AStarTest {
         System.out.println("A star 1 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 1 from key point to key point",
-            "SSSSE",
-            result
+                "Test grid 1 from key point to key point",
+                "SSSSE",
+                result
         );
     }
 
@@ -63,7 +63,7 @@ public class AStarTest {
 
         assertEquals(
             "Test grid 2 from key point to key point",
-            "SSSSEEEEEEEEEEEEENNWNWNW",
+            "SSSSEEEEEEEEEEEEENNWNNWW",
             result
         );
     }
@@ -77,9 +77,9 @@ public class AStarTest {
         System.out.println("A star 3 spends " + timer.stop());
 
         assertEquals(
-            "Test grid 3 from key point to key point",
-            "SSSSEESESSWWWW",
-            result
+                "Test grid 3 from key point to key point",
+                "SSSSEESESSWWWW",
+                result
         );
     }
 

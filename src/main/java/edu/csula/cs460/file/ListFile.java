@@ -1,53 +1,52 @@
 package edu.csula.cs460.file;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Arrays;
+import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReferenceArray;
-
-import com.google.common.base.Charsets;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.io.Resources;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 public class ListFile {
-    // try to make *all* variables final as possible
-    private final Map<String, List<String>> adjacencyList;
+    private Map<String, List<String>> adjancencyList = new HashMap<>();
 
-    public ListFile(String filepath) {
-        // ListMultimap is a very useful class when it comes to Map of key
-        // to a Collection of values
-        ListMultimap<String, String> multimap = ArrayListMultimap.create();
+    public ListFile(String filepath)
+    {
+        // TODO: read file from filepath ('exercise-1/list-1.txt' for
+        // example) and parse line by line to fill out adjancencyList
+        try
+        {
+          File file = new File(filepath);
+          FileReader fr = new FileReader(file);
+          BufferedReader br = new BufferedReader(fr);
 
-        try {
-            // use Guava to read file from resources folder
-            String content = Resources.toString(
-                Resources.getResource(filepath),
-                Charsets.UTF_8
-            );
+          String line;
 
-            Arrays.stream(content.split("\n"))
-                .forEach(value -> {
-                    AtomicReferenceArray<String> parts =
-                        new AtomicReferenceArray<>(value.split(":"));
+          while((line = br.readLine()) != null)
+          {
+            String[] split = line.split(":");
+            String listKey = split[0];
+            List<String> listAdjance = Arrays.asList(split[1].split(" "));
 
-                    Arrays.stream(parts.get(1).split(" "))
-                        .forEach(listValue -> {
-                            multimap.put(parts.get(0), listValue);
-                        });
-                });
-        } catch (IOException e) {
-            // in case of error, always log error!
-            System.err.println("ListFile has trouble reading file");
-            e.printStackTrace();
+            adjancencyList.put(listKey, listAdjance);
+          }
+
+          if(adjancencyList == null)
+          {
+            adjancencyList = new HashMap<>();
+          }
+
+          br.close();
+          fr.close();
         }
-
-        adjacencyList = Multimaps.asMap(multimap);
+        catch(IOException ignored) {}
     }
 
-    public List<String> getList(String key) {
-        return adjacencyList.get(key);
+    public List<String> getList(String key)
+    {
+        // TODO: get List of String for specific key
+        return adjancencyList.get(key);
     }
 }

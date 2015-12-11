@@ -4,127 +4,150 @@ import edu.csula.cs460.graph.Edge;
 import edu.csula.cs460.graph.Node;
 
 import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.stream.Collectors;
 
 public class ObjectOriented implements Representation {
-    private List<Node> nodes = new ArrayList<Node>();
-    private List<Edge> edges = new ArrayList<Edge>();
+    private List<Node> nodes = new ArrayList<>();
+    private Set<Node> nodeCheck = new HashSet<>();
+    private List<Edge> edges = new ArrayList<>();
+    private Set<Edge> edgeCheck = new HashSet<>();
+    private Map<Node, Map<Node, Integer>> neighbors = new HashMap<>();
 
     protected ObjectOriented(File file) {
-        // TODO: parse file content and add it to nodes
         try
         {
-          FileReader fr = new FileReader(file);
-          BufferedReader br = new BufferedReader(fr);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
 
-          int nodeNum = Integer.parseInt(br.readLine());
+            int nodeNum = Integer.parseInt(br.readLine());
 
-          for(int i = 0; i < nodeNum; i++)
-          {
-            nodes.add(new Node(i));
-          }
+            for(int i = 0; i < nodeNum; i++)
+            {
+                Node tmp = new Node(i);
+                addNode(tmp);
+            }
 
-          String[] inputArray;
-          String line = "";
+            String[] inputArray;
+            String line;
 
-          while((line = br.readLine()) != null)
-          {
-            inputArray = line.split(":");
-            edges.add(new Edge(new Node(Integer.parseInt(inputArray[0])),
-                               new Node(Integer.parseInt(inputArray[1])),
-                               Integer.parseInt(inputArray[2])));
-          }
+            while((line = br.readLine()) != null)
+            {
+                inputArray = line.split(":");
+                Edge tmp = new Edge(new Node(Integer.parseInt(inputArray[0])),
+                        new Node(Integer.parseInt(inputArray[1])),
+                        Integer.parseInt(inputArray[2]));
+                addEdge(tmp);
+            }
 
         }
-        catch(IOException ex) {}
+        catch(IOException ignored) {}
+    }
+
+    protected ObjectOriented() {
+
+    }
+
+    @Override
+    public List<Node> getNodes() {
+
+        return nodes;
+    }
+
+    @Override
+    public Optional<Node> getNode(int index) {
+        return Optional.of(nodes.get(index));
     }
 
     @Override
     public boolean adjacent(Node x, Node y) {
-      for(int i = 0; i < edges.size(); i++)
-      {
-        if(edges.get(i).getFrom().equals(x) && edges.get(i).getTo().equals(y))
-        {
-          return true;
+        for (Edge edge : edges) {
+            if (edge.getFrom().equals(x) && edge.getTo().equals(y)) {
+                return true;
+            }
         }
-      }
-      return false;
+        return false;
     }
 
     @Override
     public List<Node> neighbors(Node x) {
-      List<Node> neighbors = new ArrayList<Node>();
+        List<Node> nodesTmp = new ArrayList<>(neighbors.get(x).keySet());
+        Collections.reverse(nodesTmp);
+        return nodesTmp;
+    }
 
-      for(int i = 0; i < edges.size(); i++)
-      {
-        if(edges.get(i).getFrom().equals(x))
-        {
-          neighbors.add(edges.get(i).getTo());
-        }
-      }
-      return neighbors;
+    @Override
+    public List<Node> neighborsSearch(Node x) {
+        List<Node> nodesTmp = edges.stream()
+                .filter(edge -> x.getId() == edge.getFrom().getId()).map(Edge::getTo)
+                .collect(Collectors.toList());
+        Collections.reverse(nodesTmp);
+        return nodesTmp;
     }
 
     @Override
     public boolean addNode(Node x) {
-      for(int i = 0; i < nodes.size(); i++)
-      {
-        if(nodes.get(i).equals(x))
+
+        if(nodeCheck.add(x))
         {
-          return false;
+            nodes.add(x);
+            neighbors.put(x, new HashMap<>());
+            return true;
         }
-      }
-      nodes.add(x);
-      return true;
+
+        return false;
     }
 
     @Override
     public boolean removeNode(Node x) {
-      for(int i = 0; i < nodes.size(); i++) {
-
-        if(nodes.get(i).equals(x))
+        if(neighbors.containsKey(x))
         {
-          for(int j = 0; j < edges.size(); j++) {
-
-            if(edges.get(j).getTo().equals(x))
-            {
-              edges.remove(j);
-            }
-
-          }
-          return true;
+            neighbors.remove(x);
+            nodeCheck.remove(x);
+            nodes.remove(x);
+            nodes.parallelStream().filter(node -> neighbors.containsKey(node)).forEach(node -> {
+                if(neighbors.get(node).containsKey(x))
+                {
+                    Map<Node, Integer> tmp = neighbors.get(node);
+                    tmp.remove(x);
+                    neighbors.replace(node, tmp);
+                }
+            });
+            return true;
         }
-      }
-      return false;
+
+        return false;
     }
 
     @Override
     public boolean addEdge(Edge x) {
-      for(int i = 0; i < edges.size(); i++)
-      {
-        if(edges.get(i).equals(x))
+
+        if(edgeCheck.add(x))
         {
-          return false;
+            edges.add(x);
+            neighbors.get(x.getFrom()).put(x.getTo(), x.getValue());
+            return true;
         }
-      }
-      edges.add(x);
-      return true;
+        return false;
     }
 
     @Override
     public boolean removeEdge(Edge x) {
-      for(int j = 0; j < edges.size(); j++) {
-        if(edges.get(j).equals(x))
+        if(edgeCheck.remove(x))
         {
-          edges.remove(j);
-          return true;
+            edges.remove(x);
+            neighbors.get(x.getFrom()).remove(x.getTo());
+            return true;
         }
-      }
-      return false;
+        return false;
+    }
+
+    @Override
+    public int distance(Node from, Node to) {
+        return neighbors.get(from).get(to);
     }
 }
