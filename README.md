@@ -1,5 +1,5 @@
 
-# Artificial Intelligence [![Build Status](https://travis-ci.com/Vicken52/CS460.svg?token=pA15qZerdUQcxuJvJWRW)](https://travis-ci.com/Vicken52/CS460)
+# Artificial Intelligence [![Build Status](https://travis-ci.org/Vicken52/CS460.svg)](https://travis-ci.org/Vicken52/CS460)
 
 Welcome to CS460 Artificial Intelligence. This is a fast-paced course with emphasis theory and practice.  Please check the `README.md` often for news and announcements.
 
